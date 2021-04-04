@@ -1,0 +1,115 @@
+/*-----------------------------------------------| SIDEBAR |--------------------------------------------------*/
+
+body {
+  font-family: 'Spartan', sans-serif;
+}
+
+#menu-toggle {
+  border-color: #19323c;
+  border-radius: 5px;
+}
+
+nav {
+  background-color: #f2545b;
+}
+
+#wrapper {
+  overflow-x: hidden;
+}
+
+#sidebar-wrapper {
+  background-color: #19323c;
+  color: #f3f7f0;
+}
+
+#sidebar-wrapper {
+  min-height: 100vh;
+  margin-left: -15rem;
+  -webkit-transition: margin .25s ease-out;
+  -moz-transition: margin .25s ease-out;
+  -o-transition: margin .25s ease-out;
+  transition: margin .25s ease-out;
+}
+
+#sidebar-wrapper .sidebar-heading {
+  padding: 0.875rem 1.25rem;
+  font-size: 1.2rem;
+}
+
+#sidebar-wrapper .list-group {
+  width: 15rem;
+}
+
+#page-content-wrapper {
+  min-width: 100vw;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+  margin-left: 0;
+}
+
+/*-----------------------------------------------| SIDEBAR | FIN |--------------------------------------------------*/
+
+/*-----------------------------------------------| DESTACADOS |--------------------------------------------------*/
+.card{
+  border-radius: 50px;
+  margin-top: 20px;
+  margin-bottom: 20px!important;
+
+}
+
+img.card-img {
+  border-radius: 100px;
+  margin: 15px;
+}
+
+.card-body {
+  margin: 15px;
+}
+
+/*-----------------------------------------------| DESTACADOS | FIN |--------------------------------------------------*/
+
+
+/*-----------------------------------------------| FOOTER |--------------------------------------------------*/
+
+#footer {
+  padding: 10px 0;
+  background-color: #f2545b;
+}
+
+#footer .list-inline .list-inline-item {
+  padding: 0.25rem 1.5rem;
+}
+
+#footer a {
+  color: black;
+}
+
+#footer a:hover {
+  color: #F3F7F0;
+  text-decoration: none;
+}
+
+.container-fluid {
+  padding-right: 0rem!important;
+  padding-left: 0rem!important;
+}
+
+i {
+  padding-right: 5px;
+}
+
+/*-----------------------------------------------| FOOTER | FIN |--------------------------------------------------*/
+
+@media (min-width: 768px) {
+  #sidebar-wrapper {
+    margin-left: 0;
+  }
+  #page-content-wrapper {
+    min-width: 0;
+    width: 100%;
+  }
+  #wrapper.toggled #sidebar-wrapper {
+    margin-left: -15rem;
+  }
+}

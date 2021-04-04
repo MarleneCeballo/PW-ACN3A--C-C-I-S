@@ -1,0 +1,4 @@
+- Agregar una página en la que solo se vean productos nuevos, agregando un
+atributo de “nuevo” si/no a cada producto.
+- Mostrar los mensajes de “Comentario Enviado” y “Consulta Enviada” con 
+Javascript, por ejemplo, con una ventana modal.
