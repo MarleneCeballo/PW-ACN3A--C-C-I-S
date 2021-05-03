@@ -29,39 +29,42 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `zapatillas` (
-  `id_marca` int(11) NOT NULL,
+  `id` INTEGER NOT NULL PRIMARY KEY,
   `nombre` varchar(250) NOT NULL,
-  `descripcion` varchar(250) NOT NULL,
+  `descripcion` varchar(250),
   `precio` int(15) NOT NULL,
+  `id_marca` int(11) NOT NULL,
   `modelo` varchar(20) NOT NULL,
   `id_genero` int(1) NOT NULL,
-  `imagenmini`: varchar(200) NOT NULL, 
-  `imagengrande`: varchar(200) NOT NULL,
-  `nuevo`: boolean NOT NULL ,
+  `imagenmini` varchar(200) NOT NULL, 
+  `imagengrande` varchar(200) NOT NULL,
+  `nuevo` varchar(2) NOT NULL 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 
 CREATE TABLE `marcas` (
   `id` int(11) NOT NULL,
-  `nombre` varchar(250) NOT NULL,
+  `nombre` varchar(250) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `comentarios` (
-  `fecha` DATE NOT NULL,
+  `fecha` DATE NOT NULL PRIMARY KEY,
   `id_producto` int(11) NOT NULL,
   `nombre` varchar(20) NOT NULL,
   `apellido` varchar(20) NOT NULL,
   `comentario` varchar(300) NOT NULL,
   `estrellas` int(1) NOT NULL,
-  `email` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
 
 CREATE TABLE `categorias` (
-  `id` int(11) NOT NULL,
-  `nombre` varchar(250) NOT NULL,
+  `id` int(11) NOT NULL PRIMARY KEY ,
+  `nombre` varchar(250) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
---
 -- Índices para tablas volcadas
 --
 
