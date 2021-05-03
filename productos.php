@@ -7,6 +7,8 @@
 	require_once('head.php');
 	require_once 'login.php';
 	 $mysqli = new mysqli($hostname, $username,$password, $database);
+	 $thisFile = "productos.php";
+	 
 ?>
 
 <body>
@@ -18,28 +20,47 @@
 			<!-- ----------------------------------------| DESTACADOS | 6 cards |----------------------------------------------->
 			
 				<?php 
-				
+				// if(isset($change)){
+					// $change = $change;
+				// }else{
+				// $change = "";
+				// }
 				?>
 			
 				<div class="container">
 				<div class="row">
 				<div class="list-group list-group-flush">
 				
-				<a onClick="<?php $query = "SELECT * FROM zapatillas ORDER BY nombre DESC"; ?>" class="list-group-item list-group-item-action nav-link" id=""role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">A -> Z</a>	
-
-				<form action='' method='POST'>
-				<input type='submit' name='submit' />
-				</form>
-				<?php if(isset($_POST['submit'])){
-				$query = "SELECT * FROM zapatillas ORDER BY nombre DESC"; 
-				$resultado=$mysqli->query($query);
-				}?>
+				
+				<a href="productos.php?order=DESC" class="list-group-item list-group-item-action nav-link"  role="button" >A -> Z</a>
+				<a href="productos.php?order=ASC" class="list-group-item list-group-item-action nav-link"  role="button" >Z -> A</a>
+				<a href="productos.php?filter=NEWS" class="list-group-item list-group-item-action nav-link"  role="button" >Nuevos</a>
 				</div>
 				</div>
 				<div class="row">
-				<?php		
+				<?php	
+				
+				if (isset($_GET['order'])){
+					$order = $_GET['order'];
+					$ordenar = "ORDER BY nombre ".$order;
+				}
+				else{
+					$order = "";
+					$ordenar = " ";
+				}
+				if (isset($_GET['filter'])){
+					
+					$filtrar = "WHERE nuevo = 'si' ";
+				}
+				else{
+					
+					$filtrar = " ";
+				}
+				
+				
+				$query =  "SELECT * FROM zapatillas " . $ordenar . $filtrar;
 				 
-				 $query = "SELECT * FROM zapatillas";
+				 
 				 $resultado=$mysqli->query($query);
 				 
 				foreach ($resultado as $rows) {
