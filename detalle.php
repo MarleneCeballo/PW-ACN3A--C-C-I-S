@@ -5,18 +5,43 @@
 <?php 
 	$title = "Detalle Producto";
     require_once('head.php');
-    
+    require_once 'login.php';
+    $mysqli = new mysqli($hostname, $username,$password, $database);
 ?>
 
 <body>
-	
-	<?php
-		
-		require('sidebar.php');
-  
-    
-		?>
 
+		<!-- ----------------------------------------| SIDEBAR | FILTROS |----------------------------------------------->
+		
+    <div id="page-content-wrapper">
+
+<nav class="navbar navbar-expand-lg navbar-light border-bottom">
+	
+	<a class="nav-link" href="index.php" alt="Home | index.html">
+    <img src="img/logo_en_negro.png" alt="Logo" class="pl-4" width="100px"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse"
+        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+                <a class="nav-link" href="index.php" alt="Home | index.html">Home </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="productos.php" alt="Productos | productos.html">Productos</a>
+			</li> 
+			
+            <li class="nav-item">
+                <a class="nav-link" href="contacto.php" alt="Contacto | contacto.html">Contacto</a>
+			</li>
+        </ul>
+
+    </div>
+
+</nav>
 		
 
 		
@@ -28,17 +53,26 @@
         }else{
             $id_producto = "";
         }
-        $productos = json_decode(file_get_contents('.\data\productos.json'), true);
-        $producto = $productos[$id_producto-1];
+        $sql = "SELECT * FROM `zapatillas` where id = " . $id_producto;
+				$result = mysqli_query($mysqli, $sql) or die("Error in Selecting " . mysqli_error($mysqli));
+				$emparray = array();
+					while($row =mysqli_fetch_assoc($result))
+				{
+					$emparray[] = $row;
+				}
         
+				$producto = $emparray;
+        // $productos = json_decode(file_get_contents('.\data\productos.json'), true);
+        // $producto = $productos[$id_producto-1];
+       
         ?>
 			<div class="card text-right">
                 <div class="container col-sm-7">
-                <a href=""><img src="<?php echo $producto['imagengrande']?>" class="card-img w-100" alt="<?php echo $producto['nombre']?>"></a>
+                <a href=""><img src="<?php echo $producto[0]['imagengrande']?>" class="card-img w-100" alt="<?php echo $producto[0]['nombre']?>"></a>
                 </div>
 				<div class="card-img-overlay text-center">
-					<h5 class="card-title"><?php echo $producto['nombre']?></h5>
-					<p class="card-text">Nuevas <?php echo $producto['nombre']?>!</p>
+					<h5 class="card-title"><?php echo $producto[0]["nombre"]?></h5>
+					<p class="card-text">Nuevas <?php echo $producto[0]['nombre']?>!</p>
 					<p class="card-text"><small class="text-muted">En stock!</small> </p>
 				</div>
             </div>
@@ -46,9 +80,9 @@
             <div class="container">
                 <h3 class="text-center">Descripcion</h3>
                 <ul>
-                    <li>Precio: $<?php echo $producto['precio']?></li>
+                    <li>Precio: $<?php echo $producto[0]['precio']?></li>
                     <li>Talle: 37 a 40</li>
-                    <li>Codigo articulo: <?php echo $producto['id']?></li>
+                    <li>Codigo articulo: <?php echo $producto[0]['id']?></li>
                 </ul>
 
             </div>
@@ -109,40 +143,43 @@
                 </form>
                 </div>
             </div>
-            
             <?php
-            $comentarios = json_decode(file_get_contents('.\data\comentarios.json'), true);
-          // sin los if la pagina crashea porque busca algo que aun no esta seteado, por eso se crea un if 
-          if (isset($_REQUEST['email']) && isset($_REQUEST['comentario']) && isset($_REQUEST['estrellas'])&& isset($_REQUEST['apellido'])&& isset($_REQUEST['nombre'])) {
-          // seteo global de lo que va adentro del comment
-            $email = $_REQUEST['email'];
-            $apellido = $_REQUEST['apellido'];
-            $comentario = $_REQUEST['comentario'];
-            $estrellas = $_REQUEST['estrellas'];
-            $nombre = $_REQUEST['nombre'];
-          // seteo que horario utilizar
-            date_default_timezone_set("America/Argentina/Buenos_Aires");
-          // creo el array con los comentarios con la data recibida
-            $comentarios[date('YmdHisU')] = 
-            array("fecha" => date('d-m-Y H:i:s'),
-            "id_producto" => $id_producto,
-            "nombre"=> $nombre,
-            "apellido"=> $apellido,
-            "comentario" => $comentario,
-            "estrellas" => $estrellas,
-            "email" => $email,);
-          // escribo en el json el array en el formato correspondiente
-          file_put_contents('./data/comentarios.json',json_encode($comentarios));
-          }
-          ?>  
+             
+              // `id_producto` int(11) NOT NULL,
+              // `nombre` varchar(20) NOT NULL,
+              // `apellido` varchar(20) NOT NULL,
+              // `comentario` varchar(300) NOT NULL,
+              // `estrellas` int(1) NOT NULL,
+              // `email` varchar(100) NOT NULL
+              if (isset($_REQUEST['email']) && isset($_REQUEST['comentario']) && isset($_REQUEST['estrellas'])&& isset($_REQUEST['apellido'])&& isset($_REQUEST['nombre'])){
+                $email = $_REQUEST['email'];
+                $apellido = $_REQUEST['apellido'];
+                $comentario = $_REQUEST['comentario'];
+                $estrellas = $_REQUEST['estrellas'];
+                $nombre = $_REQUEST['nombre'];
+              $sql = "INSERT INTO comentarios(id_producto,nombre,apellido,comentario,estrellas,email) 
+                        VALUES (".$id_producto.",'".$nombre."','".$apellido."','".$comentario."',".$estrellas.",'".$email."');";
+              if ($mysqli->query($sql) === TRUE) {
+              
+              }
+              else{echo "Error al ejecutar el comando:".$mysqli->error;}
+              
+            }
+              ?>
+
             
             <div class="container">
             <h3 class="text-center pt-2 col-12">Comentarios</h3>
             <?php               
-                $coms = 0;
-                array_multisort($comentarios,SORT_DESC);
-                  foreach($comentarios as $comentario){
-                    if($comentario["id_producto"] == $id_producto){
+                $sql = "SELECT * FROM `comentarios` where id_producto = " . $id_producto;
+                $resultcoments = mysqli_query($mysqli, $sql) or die("Error in Selecting " . mysqli_error($mysqli));
+                $arraycoms = array();
+                  while($row =mysqli_fetch_assoc($resultcoments))
+                {
+                  $arraycoms[] = $row;
+                }
+                  foreach($arraycoms as $comentario){
+                    
                       
                echo" <div class='row pl-5'>";
                 echo    "<ul class='text-decoration-none list-unstyled'>";
@@ -155,10 +192,9 @@
                 echo   "</ul>";
                 echo "</div>";
                 echo "<hr>";
-                $coms++;
-                // muestro solo 3 comentarios.
-                if($coms == 3){break;}
-                }
+                
+              
+               
              }
             ?>
                 

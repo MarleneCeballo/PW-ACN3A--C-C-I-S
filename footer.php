@@ -25,7 +25,7 @@
 
     </ul>
 
-    <a href="infoExtra.php" target="new" alt="Alumnos | infoExtra.php">-TP N° 1 | Programación Web II | Eluney Jeronimo Iza | Kevin Carballal | Marlene Ceballo | Luciano Seijas | ACN2B | Profesor Pablo Kuguel | 2020 </a>
+    <a href="" target="new" alt="Alumnos | infoExtra.php">-TP N°  | Producción Web  | Eluney Jeronimo Iza | Kevin Carballal | Marlene Ceballo | Luciano Seijas | ACN3B | Profesor Andrea Abrudsky | 2020 </a>
 
 </section>
 <!-- ----------------------------------------| FOOTER | FIN |----------------------------------------------->

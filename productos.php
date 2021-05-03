@@ -14,6 +14,20 @@
 <body>
 	<?php
 		require('sidebar.php');
+		$categoria="";
+		$marca = "";
+		$filterorder = "";
+		$filternew = "";
+		
+		if(isset($_GET['idcategoria'])){
+			$categoria = "&idcategoria=" . $_GET['idcategoria'];
+		}
+		if(isset($_GET['idmarca'])){
+			$marca = "&idmarca=" . $_GET['idmarca'];
+		}
+		
+		
+
 		?>
 
 		
@@ -29,13 +43,13 @@
 			
 				<div class="container">
 				<div class="row">
-				<div class="list-group list-group-flush">
 				
 				
-				<a href="productos.php?order=DESC" class="list-group-item list-group-item-action nav-link"  role="button" >A -> Z</a>
-				<a href="productos.php?order=ASC" class="list-group-item list-group-item-action nav-link"  role="button" >Z -> A</a>
-				<a href="productos.php?filter=NEWS" class="list-group-item list-group-item-action nav-link"  role="button" >Nuevos</a>
-				</div>
+				
+				<a href="productos.php?order=ASC<?php echo $categoria . $marca ?>" class="list-group-item list-group-item-action nav-link col-4 text-center"  role="button" >A -> Z</a>
+				<a href="productos.php?order=DESC<?php echo $categoria . $marca ?>" class="list-group-item list-group-item-action nav-link col-4 text-center"  role="button" >Z -> A</a>
+				<a href="productos.php?filter=NEWS<?php echo $categoria . $marca?>" class="list-group-item list-group-item-action nav-link col-4 text-center"  role="button" >Nuevos</a>
+				
 				</div>
 				<div class="row">
 				<?php	
@@ -43,6 +57,7 @@
 				if (isset($_GET['order'])){
 					$order = $_GET['order'];
 					$ordenar = "ORDER BY nombre ".$order;
+					$filterorder = "&order=" . $_GET['order'];
 				}
 				else{
 					$order = "";
@@ -58,7 +73,7 @@
 				}
 				
 				
-				$query =  "SELECT * FROM zapatillas " . $ordenar . $filtrar;
+				$query =  "SELECT * FROM zapatillas "  . $filtrar . $ordenar;
 				 
 				 
 				 $resultado=$mysqli->query($query);

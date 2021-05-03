@@ -48,7 +48,6 @@ CREATE TABLE `marcas` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `comentarios` (
-  `fecha` DATE NOT NULL PRIMARY KEY,
   `id_producto` int(11) NOT NULL,
   `nombre` varchar(20) NOT NULL,
   `apellido` varchar(20) NOT NULL,
@@ -57,7 +56,14 @@ CREATE TABLE `comentarios` (
   `email` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-
+CREATE TABLE `consulta` (
+  `nombre` varchar(20) NOT NULL,
+  `apellido` varchar(20) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `telefono` varchar(20) NOT NULL,
+  `area` int(1) NOT NULL,
+  `consulta` varchar(300) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `categorias` (
   `id` int(11) NOT NULL PRIMARY KEY ,

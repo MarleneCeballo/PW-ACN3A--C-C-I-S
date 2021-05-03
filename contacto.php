@@ -5,12 +5,41 @@
 <?php 
 	$title = "Contacto";
 	require_once('head.php');
+	require_once 'login.php';
+	$mysqli = new mysqli($hostname, $username,$password, $database);
 ?>
 
 <body>
-	<?php
-		require('sidebar.php');
-		?>
+<div id="page-content-wrapper">
+
+<nav class="navbar navbar-expand-lg navbar-light border-bottom">
+	
+	<a class="nav-link" href="index.php" alt="Home | index.html">
+    <img src="img/logo_en_negro.png" alt="Logo" class="pl-4" width="100px"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse"
+        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+                <a class="nav-link" href="index.php" alt="Home | index.html">Home </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="productos.php" alt="Productos | productos.html">Productos</a>
+			</li> 
+			
+            <li class="nav-item">
+                <a class="nav-link" href="contacto.php" alt="Contacto | contacto.html">Contacto</a>
+			</li>
+        </ul>
+
+    </div>
+
+</nav>
+		
 
 	
 
@@ -19,7 +48,7 @@
   <div class="mt-5 pt-2 mb-5 d-block">
 	<div class="container text-center pt-5 mt-5 mision rounded shadow">
 	   <img src="img/logo.recort.png" alt="Logo" width="100px">
-		<form class="pb-2" method="POST" action="mail.php">
+		<form class="pb-2" method="POST" action="">
 	<div class="form-row pt-5">
 	
 	  <div class="form-group col-md-4">
@@ -34,7 +63,7 @@
 
 	  <div class="form-group col-md-4">
 		  <label for="inputEmail">Email</label>
-		  <input name="mail" type="email" class="form-control" id="inputEmail" placeholder="Email">
+		  <input name="email" type="email" class="form-control" id="inputEmail" placeholder="Email">
 		</div>
 	</div>
 	
@@ -60,9 +89,27 @@
 	</div>
 	<div class="form-group">
 	  <label for="textArea">Comentario</label>
-	  <textarea name="comentario" class="form-control" id="textArea" rows="8"></textarea>
+	  <textarea name="consulta" class="form-control" id="textArea" rows="8"></textarea>
 	</div>
 	<button type="submit" class="btn btn-primary" onclick="consultaEnviada()">Enviar</button>
+	<?php 
+	
+	if (isset($_REQUEST['nombre']) && isset($_REQUEST['apellido'])){
+		$nombre = $_REQUEST['nombre'];
+		$apellido = $_REQUEST['apellido'];
+		$email = $_REQUEST['email'];
+		$telefono = $_REQUEST['telefono'];
+		$area = $_REQUEST['area'];
+		$consulta = $_REQUEST['consulta'];
+	  $sql = "INSERT INTO consulta(nombre,apellido,email,telefono,area,consulta) 
+				VALUES ('".$nombre."','".$apellido."','".$email."','".$telefono."',".$area.",'".$consulta."');";
+	  if ($mysqli->query($sql) === TRUE) {
+		
+	  }
+	  else{echo "Error al ejecutar el comando:".$mysqli->error;}
+	  
+	}
+	?>
 	<script> 
                   function consultaEnviada() {
                     alert("Consulta Enviada");

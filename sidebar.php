@@ -3,6 +3,7 @@
 		<div class="border-right" id="sidebar-wrapper">
 		<!-- ----------------------------------------| CATEGORIA |----------------------------------------------->
 		<?php
+		$mysqli = new mysqli($hostname, $username,$password, $database);
 				if (isset($_REQUEST['idcategoria'])){
 				$idCategoria = $_REQUEST['idcategoria'];
 			}
@@ -15,17 +16,56 @@
 			else{
 				$idMarca = '';
 			}
-
+			if (isset($_GET['order'])){
+				$order = $_GET['order'];
+			
+				$filterorder = "&order=" . $_GET['order'];
+			}
+			else{
+				$order = "";
+				$filterorder = "";
+			
+			}
+			if (isset($_GET['filter'])){
+				
+				$filter = "&filter=NEWS";
+			}
+			else{
+				
+				$filter = "";
+			}
+			
+			
+			
+			
 				$thisFile = "productos.php";
 				$linkCategoria = $thisFile.'?idcategoria=&idmarca='.$idMarca;
-				$marcas = json_decode(file_get_contents('.\data\marcas.json'), true);
+				$sql = "SELECT * FROM `marcas`";
+				$result = mysqli_query($mysqli, $sql) or die("Error in Selecting " . mysqli_error($mysqli));
+				$emparray = array();
+					while($row =mysqli_fetch_assoc($result))
+				{
+					$emparray[] = $row;
+				}
+
+				$marcas = $emparray;
 				
+				
+
+				$sql2 = "SELECT * FROM `categorias`";
+				$result2 = mysqli_query($mysqli, $sql2) or die("Error in Selecting " . mysqli_error($mysqli));
+				$emparray2 = array();
+					while($row =mysqli_fetch_assoc($result2))
+				{
+					$emparray2[] = $row;
+				}
+
 				
 				$linkMarca = $thisFile.'?idcategoria=&idmarca='.$idCategoria;
-				$categorias = json_decode(file_get_contents('.\data\categorias.json'), true);
+				$categorias = $emparray2;
 			
 
-				$productos = json_decode(file_get_contents('.\data\productos.json'), true);
+				// $productos = json_decode(file_get_contents('.\data\productos.json'), true);
 					// $productos = json_decode(file_get_contents('C:\xampp\htdocs\ProgramacionWeb\PW2-G2-09-23-Ceballo-Carballal-Seijas-Iza\data\productos.json'), true);
 						
 					$curPageName = substr($_SERVER["SCRIPT_NAME"],strrpos($_SERVER["SCRIPT_NAME"],"/")+1);  
@@ -34,11 +74,12 @@
 				echo'<div class="sidebar-heading nav-link"> World Shoes </div>';
 				echo'<div class="list-group list-group-flush">';
 				echo'<a href="'.$linkCategoria.'" class="list-group-item list-group-item-action nav-link dropdown-toggle" id="navbarDropdown"';
+				
 				echo'role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Categorias</a>';
 				echo'<div class="dropdown-menu dropdown-menu" aria-labelledby="navbarDropdown">';
 				foreach ($categorias as $categoria) {
 					echo '<a class="dropdown-item" href="'.$thisFile.'?idcategoria='.$categoria['id'].
-								'&idmarca='.$idMarca.'">'.$categoria['nombre'].'</a><br />';
+								'&idmarca='.$idMarca.$filterorder.$filter.'">'.$categoria['nombre'].'</a><br />';
 					
 				}
 
@@ -50,8 +91,8 @@
 				echo '<div class="dropdown-menu dropdown-menu" aria-labelledby="navbarDropdown">';
 
 				foreach ($marcas as $marca) {
-					echo '<a class="dropdown-item" href="'.$thisFile.'?idcategoria='.$idCategoria.'&idmarca='.$marca['id'].'">'.$marca['nombre'].'</a><br />';
-					
+					echo '<a class="dropdown-item" href="'.$thisFile.'?idcategoria='.$idCategoria.'&idmarca='.$marca['id'].$filterorder.$filter.'">'.$marca['nombre'].'</a><br />';
+					$sql = "SELECT * FROM `zapatillas` where id_marca = ".$marca['id'];
 					
 				}
 
@@ -97,9 +138,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="productos.php" alt="Productos | productos.html">Productos</a>
 			</li> 
-			<li class="nav-item">
-                <a class="nav-link" href="nuevos.php" alt="ProductosNuevos | productos.html">Nuevos</a>
-            </li>
+			
             <li class="nav-item">
                 <a class="nav-link" href="contacto.php" alt="Contacto | contacto.html">Contacto</a>
 			</li>

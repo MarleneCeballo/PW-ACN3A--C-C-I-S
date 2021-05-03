@@ -7,10 +7,36 @@
 	require_once('head.php');
 ?>
 <body>
-		<?php
-		require('sidebar.php');
-		$productos = json_decode(file_get_contents('.\data\productos.json'), true);
-		?>
+<div id="page-content-wrapper">
+
+<nav class="navbar navbar-expand-lg navbar-light border-bottom">
+	
+	<a class="nav-link" href="index.php" alt="Home | index.html">
+    <img src="img/logo_en_negro.png" alt="Logo" class="pl-4" width="100px"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse"
+        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+                <a class="nav-link" href="index.php" alt="Home | index.html">Home </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="productos.php" alt="Productos | productos.html">Productos</a>
+			</li> 
+			
+            <li class="nav-item">
+                <a class="nav-link" href="contacto.php" alt="Contacto | contacto.html">Contacto</a>
+			</li>
+        </ul>
+
+    </div>
+
+</nav>
+		
 		
 		
     <?php
@@ -28,7 +54,10 @@
 	
 			<div class="card-deck">
 			<?php
-			 $query = "SELECT * FROM zapatillas WHERE id in(2,3,7)";
+			$r4 = rand(1,42);
+			$r5 = rand(1,42);
+			$r6 = rand(1,42);
+			 $query = "SELECT * FROM zapatillas WHERE id in(".$r4.",".$r5.",".$r6.")";
 			 $resultado=$mysqli->query($query);
 			foreach ($resultado as $rows) {
 				
@@ -47,7 +76,10 @@
 			
 				<div class="card-deck">
 				<?php
-			 $query = "SELECT * FROM zapatillas WHERE id in(5,1,8)";
+				$r1 = rand(1,42);
+				$r2 = rand(1,42);
+				$r3 = rand(1,42);
+			 $query = "SELECT * FROM zapatillas WHERE id in(".$r1.",".$r2.",".$r3.")";
 			 $resultado=$mysqli->query($query);
 			foreach ($resultado as $rows) {
 				
