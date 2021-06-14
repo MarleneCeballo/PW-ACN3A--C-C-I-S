@@ -1,5 +1,5 @@
 <?php 
-require('inc/header.php');
+require('../../inc/header.php');
 //include('clases/usuarios.php');
 ?> 
 
@@ -8,7 +8,7 @@ require('inc/header.php');
       <?php $userMenu = 'Usuarios';
 	  
 	  
-	   if(  !in_array('user',$_SESSION['usuario']['permisos']['seccion'])){ 
+	   if(  in_array('user',$_SESSION['usuarios']['permisos'])){ 
 				header('Location: index.php');
 			}
 			

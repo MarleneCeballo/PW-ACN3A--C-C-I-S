@@ -22,7 +22,7 @@ if(isset($_POST['login'])){
 }
  
 if(isset($_GET['logout'])){
-    unset($_SESSION['usuario']); 
+    unset($_SESSION['usuarios']); 
 }
 	 
 if($user->notLogged()){
@@ -52,7 +52,7 @@ if($user->notLogged()){
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Hola <?php echo $_SESSION['usuario']['nombre']?></a>
+          <a class="navbar-brand" href="#">Hola <?php echo $_SESSION['usuarios']['nombre']?></a>
         </div>
       </div>
 </nav>

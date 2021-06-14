@@ -5,10 +5,12 @@
             <ul class="nav nav-sidebar">
               <li><a href="index.php">Home</a></li>
               <li class="<?php echo isset($productsMenu)?'active':''?>"><a href="productos.php">Productos</a></li>
-			  <?php if( in_array('user',$_SESSION['usuario']['permisos']) ){?>
+             <li><?php var_dump($_SESSION['usuarios']['permisos']) ?></li>
+			  <?php if( in_array('user',$_SESSION['usuarios']['permisos']) ){?>
 					<li class="<?php echo isset($userMenu)?'active':''?>"><a href="usuarios.php">Usuarios</a></li>
 			  <?php }?>
 			 <li class="<?php echo isset($perfilMenu)?'active':''?>"><a href="index.php">Perfiles</a></li>
+       <li class="<?php echo isset($categoriasMenu)?'active':''?>"><a href="index.php">Categorias</a></li>
               <li><a href="?logout">logout</a></li>
             </ul>
            

@@ -158,7 +158,7 @@ Class Usuario{
  			if(isset($datos['id_usuario'])){
 				if($this->encrypt($data['clave'],$datos['salt']) == $datos['clave']){
 				
-					$_SESSION['usuario'] = $datos;
+					$_SESSION['usuarios'] = $datos;
 					$query = "SELECT DISTINCT cod FROM permisos
 							  INNER JOIN perfil_permisos ON (perfil_permisos.permiso_id = permisos.id)
 							  INNER JOIN usuarios_perfiles ON (usuarios_perfiles.perfil_id = perfil_permisos.perfil_id)
@@ -168,7 +168,7 @@ Class Usuario{
 						$permisos['cod'][$key] = $value['cod'];
 					}	
 						
-					$_SESSION['usuario']['permisos'] = $permisos;
+					$_SESSION['usuarios']['permisos'] = $permisos;
 				}
 			} 
         }
@@ -178,7 +178,7 @@ Class Usuario{
 	*/
 	
         public function notLogged(){
-            if(!isset($_SESSION['usuario'])){
+            if(!isset($_SESSION['usuarios'])){
 				return true;
 			}
 			return false;
