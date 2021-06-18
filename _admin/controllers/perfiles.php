@@ -1,19 +1,52 @@
 <?php 
-Class Perfil{
+Class Perfiles extends Controller{
 
     /*conexion a la base*/
 	private $con;
 	
-	public function __construct($con){
-		$this->con = $con;
+	public function __construct(){
+		
+		if(isset($_POST['formulario_perfiles'])){ 
+			if($_POST['id'] > 0){
+					$this->edit($_POST); 
+				   
+			}else{
+				
+					$this->save($_POST); 
+			}
+			
+			header('Location: index.php');
+		}	
+		 
+		if(isset($_GET['del'])){
+				$resp = $this->del($_GET['del']) 	;
+				if($resp == 1){
+					header('Location: index.php');	
+				}
+				echo '<script>alert("'.$resp.'");</script>';
+	
+		}
+		
 	}
-
+	public function loadModel($model){
+		$url = 'models/'.$model.'modelo.php';
+        if (file_exists($url)){
+            require $url;
+            $modelName = $model.'Modelo';
+            $this->modelo = new $modelName();
+        }
+    }
+	
 	public function getList(){
 		$query = "SELECT id, nombre 
 		           FROM perfil";
         return $this->con->query($query); 
 	}
+	function render(){
+        $this->view->render("perfiles/index");
+    }
 	
+
 	public function get($id){
 	    $query = "SELECT id,nombre
 		           FROM perfil WHERE id = ".$id;

@@ -1,7 +1,7 @@
 <?php 
 Class Categoria{
 
-    /*conexion a la base*/
+    
 	private $con;
 	
 	public function __construct($con){
@@ -14,10 +14,7 @@ Class Categoria{
         return $this->con->query($query); 
 	}
 	
-	
-	/**
-	* Guardo los datos en la base de datos
-	*/
+
 	public function save($data){
 		
             foreach($data as $key => $value){
@@ -29,9 +26,9 @@ Class Categoria{
 					}
 				}
 			}
-			//var_dump($datos);die();
+			
             $sql = "INSERT INTO categorias(".implode(',',$columns).") VALUES('".implode("','",$datos)."')";
-			//echo $sql;die();
+			
 			
             $this->con->exec($sql);
 			$id = $this->con->lastInsertId();
@@ -41,7 +38,7 @@ Class Categoria{
 				$sql .= 'INSERT INTO perfil_permisos(perfil_id,permiso_id) 
 							VALUES ('.$id.','.$permisos.');';
 			}
-			//echo $sql;die();
+			
 
  			$this->con->exec($sql);
 	} 
@@ -71,7 +68,7 @@ Class Categoria{
 				}
             }
             $sql = "UPDATE categorias SET ".implode(',',$columns)." WHERE id = ".$id;
-            //echo $sql; die();
+         
             $this->con->exec($sql);
 			 
 	} 

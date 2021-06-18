@@ -4,7 +4,7 @@ class Nuevo extends Controller{
     function __construct(){
         parent::__construct();
         $this->view->mensaje = '';
-      //  echo "La ruta ingresado no existe";
+        
 
     }
 

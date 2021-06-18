@@ -29,7 +29,7 @@
             <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas"><i class="glyphicon glyphicon-chevron-left"></i></button>
           </p>
           
-		  <form action="/Programacion2021/PW-ACN3A-C-C-I-S/_admin/views/perfiles/index.php" method="post" class=" from-horizontal">
+		  <form action="<?=constant("URL")?>perfiles" method="post" class=" from-horizontal">
                 <div class="form-group">
                     <label for="usuario" class="col-sm-2 control-label">Usuario</label>
                      <div class="col-sm-10">

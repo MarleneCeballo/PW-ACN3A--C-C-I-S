@@ -9,11 +9,11 @@ class Database{
 
     public function __construct()
     {
-        $this->host = constant('HOST');
-        $this->db = constant('DB');
-        $this->user = constant('USER');
-        $this->password = constant('PASS');
-        $this->port = constant('PORT');
+        $this->host = constant('hostname');
+        $this->db = constant('database');
+        $this->user = constant('username');
+        $this->password = constant('password');
+        $this->port = constant('port');
 
     }
 

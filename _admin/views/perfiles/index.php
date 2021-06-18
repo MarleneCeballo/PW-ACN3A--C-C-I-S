@@ -4,31 +4,11 @@
       
       <?php $perfilMenu = 'Perfiles';
 	  
-	$perfiles = new Perfil($con);
+	
 	require_once('../../inc/side_bar.php');
 	 
 	 
-	if(isset($_POST['formulario_perfiles'])){ 
-	    if($_POST['id'] > 0){
-                $perfiles->edit($_POST); 
-               
-	    }else{
-			
-                $perfiles->save($_POST); 
-        }
-		
-		header('Location: index.php');
-	}	
-	 
-	if(isset($_GET['del'])){
-			$resp = $perfiles->del($_GET['del']) 	;
-            if($resp == 1){
-				header('Location: index.php');	
-			}
-			echo '<script>alert("'.$resp.'");</script>';
 
-	}
-	
 
         ?>
 	  
