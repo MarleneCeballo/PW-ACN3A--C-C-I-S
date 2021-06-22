@@ -1,19 +1,14 @@
-<?php require_once('../../inc/header.php');?>
+<?php require_once('./inc/header.php');?>
 <div class="container-fluid">
       
       <?php $perfilMenu = 'Perfiles';
-	require_once('../../inc/side_bar.php');
-	
-	$perfil = new Perfil($con); 
-	
-	$query = 'SELECT * FROM permisos';
-    $permisos = $con->query($query);
-   // var_dump($permisos);
-	
-	if(isset($_GET['edit'])){
-            $perfiles = $perfil->get($_GET['edit']); 
-            //var_dump($perfiles);
-	} 
+	    require_once('./inc/side_bar.php');
+
+	    $permisos = $this -> permisos;
+        
+        if(isset($_GET['edit'])){
+            $perfiles = $this -> perfiles -> get($_GET['edit']); 
+        } 
 	?>
 	  
 	  
@@ -26,11 +21,15 @@
           </p>
           
 	  <h1 class="page-header">
-                    Nuevo Perfil
+                <?php  if(isset($_GET['edit'])){
+                    echo "Editar Perfil";
+                } else { echo "Nuevo Perfil";}
+                  
+                ?>
           </h1>
   
           <div class="col-md-2"></div>
-            <form action="\Programacion2021\PW-ACN3A-C-C-I-S\_admin\views\perfiles\index.php" method="post" class="col-md-6 from-horizontal">
+            <form action="./perfiles/index" method="post" class="col-md-6 from-horizontal">
                 <div class="form-group">
                     <label for="nombre" class="col-sm-2 control-label">Nombre</label>
                     <div class="col-sm-10">
@@ -72,4 +71,4 @@
 	</div>
 </div><!--/.container-->
 
-<?php include('../../inc/footer.php')?>
+<?php include('./inc/footer.php')?>

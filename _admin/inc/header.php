@@ -1,23 +1,16 @@
 <!DOCTYPE html>
 <?php  session_start();
-require_once('../../config/config.php');
-// corregir rutas absolutas de abajo 
-require_once('C:\xampp\htdocs\Programacion2021\PW-ACN3A-C-C-I-S\_admin\controllers\usuarios.php');
-require_once('C:\xampp\htdocs\Programacion2021\PW-ACN3A-C-C-I-S\_admin\controllers\perfil.php');
+require_once('./config/config.php');
+require_once('./controllers/usuarios.php');
+require_once('./controllers/perfiles.php');
 
 
-try {
-        $con = new PDO('mysql:host='.$hostname.';port='.$port.';dbname='.$database, $username, $password);
-        
-} catch (PDOException $e) {
-        print "�Error!: " . $e->getMessage();
-        die();
-}
 
 
-$user = new Usuario($con);
+$user = new Usuario();
 
 if(isset($_POST['login'])){
+  $user->loadModel("Usuario");
 	$user->login($_POST);
 }
  
@@ -26,7 +19,7 @@ if(isset($_GET['logout'])){
 }
 	 
 if($user->notLogged()){
-  header('Location: ../../index.php');
+  header('Location: index.php');
 }
 
 ?>
@@ -37,9 +30,10 @@ if($user->notLogged()){
 		<title>Admin - World Shoes</title>
 		<meta name="generator" content="Bootply" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href="../../css/bootstrap.min.css" rel="stylesheet">
-    <link href="../../css/styles.css" rel="stylesheet">
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
+    <link href="./css/styles.css" rel="stylesheet">
     <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
+    
 		
 	</head>
 	<body>

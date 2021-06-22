@@ -13,10 +13,11 @@ class App{
         $archivocontrolador = 'controllers/' . $ruta . '.php';
         echo $archivocontrolador;
         if(file_exists($archivocontrolador)){
-            echo "entro";
+            
             require_once $archivocontrolador;
             $controlador = new $ruta;
             $controlador->loadModel($ruta);
+            echo " entro";
             //hay un metodo
             if (isset($url[1])){
                 $controlador->{$url[1]}();

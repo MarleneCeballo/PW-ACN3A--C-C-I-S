@@ -1,22 +1,17 @@
 <?php 
-class PerfilesModelo extends Model{
-	
-	
+class Perfiles_aeModelo extends Model{
     function __construct()
     {
 		parent::__construct();
+      
 	}
-
-	public function getList(){
+    public function getList(){
 		$query = "SELECT id, nombre 
 		           FROM perfil";
 				   
         return $this->db->query($query); 
 	}
-
-	
-	
-	public function get($id){
+    public function get($id){
 	    $query = "SELECT id, nombre
 		           FROM perfil WHERE id = $id";
 	
@@ -36,7 +31,7 @@ class PerfilesModelo extends Model{
             return $perfil;
 	}
 
+}
 
-} 
 
 ?>

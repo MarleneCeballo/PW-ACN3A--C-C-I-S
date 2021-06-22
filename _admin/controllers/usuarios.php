@@ -1,16 +1,16 @@
 <?php 
-Class Usuario{
+
+Class Usuario extends Controller{
 
     /*conexion a la base*/
 	private $con;
 	
+
+	public function __construct(){
+		parent::__construct();
 	
-	public function __construct($con){
-		$this->con = $con;
 	}
-        /**
-        * Obtengo todos los usuarios
-        */
+      // pasar getlist al model
 	public function getList(){
 		$query = "SELECT id_usuario,nombre,apellido,email,usuario,clave,activo 
 		           FROM usuarios ";
@@ -31,29 +31,13 @@ Class Usuario{
 			var_dump($resultado);echo '</pre>'; */
             return $resultado; 
 	}
-	
-	/**
-	* obtengo un usuario
-	*/
-	public function get($id){
-	    $query = "SELECT id_usuario,nombre,apellido,email,usuario,clave,activo,salt
-		           FROM usuarios WHERE id_usuario = ".$id;
-        $query = $this->con->query($query); 
-			
-		$usuario = $query->fetch(PDO::FETCH_OBJ);
-			
-			$sql = 'SELECT perfil_id
-					  FROM usuarios_perfiles  
-					  WHERE usuarios_perfiles.usuario_id = '.$usuario->id_usuario;
-					  
-			foreach($this->con->query($sql) as $perfil){
-				$usuario->perfiles[] = $perfil['perfil_id'];
-			}
-			/*echo '<pre>';
-			var_dump($usuario);echo '</pre>'; */
-            return $usuario;
-	}
-	
+
+	function render(){
+		
+        $this->view->render("usuarios/index");
+    }
+
+
 	
 	/**
 	* Guardo los datos en la base de datos
@@ -91,7 +75,7 @@ Class Usuario{
 	    unset($data['id_usuario']);
 	    
             if( $data['clave'] != null){
-				$user = $this->get($id);
+				$user = $this-> model ->get($id);
                 $data['clave'] = $this->encrypt($data['clave'],$user->salt);
             }else{
                 unset($data['clave']);
@@ -123,21 +107,26 @@ Class Usuario{
 	* encrypt password
 	*/
 	
+	
+	
+	/**
+	* Login de usuario
+	*/
+	public function loadModel($model){
+		$model = "Usuario";
+		$url = 'model/Usuario.php';
+        if (file_exists($url)){
+            require $url;
+            $modelName = 'UsuarioModelo';
+            $this->model = new $modelName();
+        }
+    }
+
 	private function encrypt($clave,$salt){
 		
-		/* concateno el salt con la clave */
 		$clave .= $salt;
-		
-		/* pongo el salt al medio de la contraseña */
-		//$clave = substr($clave,0,strlen($clave)/2).$salt.substr($clave,strlen($clave)/2,strlen($clave));
-		
-		/* par aobtener la lista de algoritmos de hash usar hash_algos()*/
-		//return md5($clave);
 		return hash('md5',$clave);
 	}
-	/**
-	* borrado de usuario
-	*/
 	
         public function del($id){
 			$sql = "DELETE FROM usuarios WHERE id_usuario = ".$id.';';
@@ -146,36 +135,29 @@ Class Usuario{
             $this->con->exec($sql);
         }
 		
+	public function login($data){
+        $query = "SELECT id_usuario,nombre,apellido,email,usuario,clave,activo,salt
+               FROM usuarios WHERE activo = 1 AND usuario = '".$data['usuario']."'";
+        $datos = $this -> model -> db ->query($query)->fetch(PDO::FETCH_ASSOC);
+         if(isset($datos['id_usuario'])){
+            if($this->encrypt($data['clave'],$datos['salt']) == $datos['clave']){
+            
+                $_SESSION['usuarios'] = $datos;
+                $query = "SELECT DISTINCT cod FROM permisos
+                          INNER JOIN perfil_permisos ON (perfil_permisos.permiso_id = permisos.id)
+                          INNER JOIN usuarios_perfiles ON (usuarios_perfiles.perfil_id = perfil_permisos.perfil_id)
+                          WHERE usuario_id = ".$datos['id_usuario'];
+                $permisos = array(); 
+                foreach($this-> model ->db->query($query) as $key => $value){
+                    $permisos['cod'][$key] = $value['cod'];
+                }	
+                    
+                $_SESSION['usuarios']['permisos'] = $permisos;
+            }
+        } 
+    }
 	
-	/**
-	* Login de usuario
-	*/
-	
-        public function login($data){
-            $sql = "SELECT id_usuario,nombre,apellido,email,usuario,clave,activo,salt
-		           FROM usuarios WHERE activo = 1 AND usuario = '".$data['usuario']."'";
-			$datos = $this->con->query($sql)->fetch(PDO::FETCH_ASSOC);
- 			if(isset($datos['id_usuario'])){
-				if($this->encrypt($data['clave'],$datos['salt']) == $datos['clave']){
-				
-					$_SESSION['usuarios'] = $datos;
-					$query = "SELECT DISTINCT cod FROM permisos
-							  INNER JOIN perfil_permisos ON (perfil_permisos.permiso_id = permisos.id)
-							  INNER JOIN usuarios_perfiles ON (usuarios_perfiles.perfil_id = perfil_permisos.perfil_id)
-							  WHERE usuario_id = ".$datos['id_usuario'];
-					$permisos = array(); 
-					foreach($this->con->query($query) as $key => $value){
-						$permisos['cod'][$key] = $value['cod'];
-					}	
-						
-					$_SESSION['usuarios']['permisos'] = $permisos;
-				}
-			} 
-        }
-		
-		/**
-	* Login de usuario
-	*/
+       
 	
         public function notLogged(){
             if(!isset($_SESSION['usuarios'])){
