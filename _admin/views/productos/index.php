@@ -23,6 +23,14 @@
  
 
           <h2 class="sub-header">Listado <a href="productos_ae"><button type="button" class="btn btn-success" title="Agregar">Add</button></a></h2>
+          <div id="myBtnContainer">
+		  <button class="btn active" onclick="filterSelection('all')"> Todos</button>
+  		  <button class="btn" onclick="filterSelection('adidas')"> Adidas</button>
+  		  <button class="btn" onclick="filterSelection('nike')"> Nike</button>
+        <button class="btn" onclick="filterSelection('converse')"> Converse</button>
+        <button class="btn" onclick="filterSelection('dc')"> DC</button>
+        <button class="btn" onclick="filterSelection('vans')"> Vans</button>
+		  </div>
           <div class="table-responsive">
             <table class="table table-striped">
               <thead>
@@ -38,8 +46,31 @@
 			  <tbody>
 				<?php  	 
 					foreach($productos as $producto){?>
+              <?php
+              switch($producto['id_marca']){
+              case 1:
+                 echo'<tr class="filterDiv adidas">';
+                  break;
+              case 2:
+                  echo'<tr class="filterDiv nike">';
+                  break;
+              case 3:
+                echo'<tr class="filterDiv converse">';
+                  break;
+              case 4:
+                echo'<tr class="filterDiv dc">';
+                  break;
+              case 5:
+                echo'<tr class="filterDiv vans">';
+                  break;
               
-						<tr>
+              default:
+              echo'<tr class="filterDiv">';
+                break;
+              }
+             
+              ?>
+						
 						  <td><?php echo $producto['id'];?></td>
                           <td><?php echo $producto['nombre'];?></td> 
                           <td><?php echo $producto['modelo'];?></td>
@@ -60,5 +91,5 @@
       </div><!--/row-->
 	</div>
 </div><!--/.container-->
-
+<script src="./script/filter.js"></script>
 <?php include('inc/footer.php')?>
