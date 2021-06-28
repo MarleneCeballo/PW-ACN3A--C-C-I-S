@@ -9,6 +9,7 @@
         if(isset($_GET['edit'])){
             $perfiles = $this -> perfiles -> get($_GET['edit']); 
         } 
+
 	?>
 	  
 	  
@@ -29,7 +30,7 @@
           </h1>
   
           <div class="col-md-2"></div>
-            <form action="./perfiles/index" method="post" class="col-md-6 from-horizontal">
+            <form action="perfiles" method="post" class="col-md-6 from-horizontal">
                 <div class="form-group">
                     <label for="nombre" class="col-sm-2 control-label">Nombre</label>
                     <div class="col-sm-10">
@@ -55,7 +56,17 @@
                         </select>
                     </div>
                 </div> 
-                 
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                    <div class="checkbox">
+                        <label for="activo">
+                      
+                        <input type="checkbox" name="activo" value="1" <?php if(isset($perfiles->activo))if($perfiles->activo==1){echo 'checked';}else{echo'';}?>> Activo
+                        </label>
+                       
+                    </div>
+                    </div>
+                </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                     <button type="submit" class="btn btn-default" name="formulario_perfiles" >Guardar</button>

@@ -1,14 +1,13 @@
 <?php 
 require('./inc/header.php');
-//include('clases/usuarios.php');
 ?> 
 
 <div class="container-fluid">
       
-      <?php $userMenu = 'Usuarios';
+      <?php $comentariosMenu = 'Comentarios';
 	  
-	  $users = $this -> users;
-	  $permisos = $this -> permisos;
+	  $comentarios = $this -> comentarios;
+
 	   if(!in_array('user.add',$_SESSION['usuarios']['permisos']['cod'])){ 
 				header('Location: index.php');
 			}
@@ -31,48 +30,50 @@ require('./inc/header.php');
           </p>
           
 		  <h1 class="page-header">
-            Usuarios
+            Comentarios
           </h1>
  
 
           <h2 class="sub-header">Listado 
-		  <?php if(in_array('user.add',$_SESSION['usuarios']['permisos']['cod'])){?>
-				<a href="usuarios_ae"><button type="button" class="btn btn-success" title="Agregar">Add</button></a>
-		  <?php }?>	
+	
+				<a href="comentarios_ae"><button type="button" class="btn btn-success" title="Agregar">Add</button></a>
+		
 		  </h2>
-		   <?php if(in_array('user.see',$_SESSION['usuarios']['permisos']['cod'])){?>
+		  
 			  <div class="table-responsive">
 				<table class="table table-striped">
 				  <thead>
 					<tr>
-					  <th>#</th>
+					 <th>#</th>
+					  <th>Id_producto</th>
 					  <th>Nombre</th>
 					  <th>Apellido</th>
-					  <th>Usuario</th>
+					  <th>Comentario</th>
+					  <th>Estrellas</th>
 					  <th>eMail</th>
-					  <th>Perfil</th>
 					  <th>Activo</th>
 					  <th>Acciones</th>
 					</tr>
 				  </thead>
 				  <tbody>
 					<?php  	 
-						foreach($users->getList() as $usuario){?>
+						foreach($comentarios as $comentario){?>
 				  
-							<tr>
-							  <td><?php echo $usuario['id_usuario'];?></td>
-							  <td><?php echo $usuario['nombre'];?></td>
-							  <td><?php echo $usuario['apellido'];?></td>
-							  <td><?php echo $usuario['usuario'];?></td>
-							  <td><?php echo $usuario['email'];?></td>
-							  <td><?php echo isset($usuario['perfiles'])?implode(', ',$usuario['perfiles']):'No tiene perfiles asignados';?></td>
-							  <td><?php echo ($usuario['activo'])?'si':'no';?></td>
+							<tr> 
+							  <td><?php echo $comentario['id'];?></td>
+							  <td><?php echo $comentario['id_producto'];?></td>
+							  <td><?php echo $comentario['nombre'];?></td>
+							  <td><?php echo $comentario['apellido'];?></td>
+							  <td><?php echo $comentario['comentario'];?></td>
+							  <td><?php echo $comentario['estrellas'];?></td>
+							  <td><?php echo $comentario['email'];?></td>
+							  <td><?php echo $comentario['aprobado'];?></td>
 							  <td>
 								  <?php if(in_array('user.edit',$_SESSION['usuarios']['permisos']['cod'])){?>
-										<a href="usuarios_ae?edit=<?php echo $usuario['id_usuario']?>"><button type="button" class="btn btn-info" title="Modificar">M</button></a>
+										<a href="comentarios_ae?editar=<?php echo $comentario['id']?>"><button type="button" class="btn btn-info" title="Modificar">M</button></a>
 								  <?php }?>
 								   <?php if(in_array('user.del',$_SESSION['usuarios']['permisos']['cod'])){?>
-										<a href="usuarios?del=<?php echo $usuario['id_usuario']?>"><button type="button" class="btn btn-danger" title="Borrar">X</button></a>
+										<a href="comentarios?delete=<?php echo $comentario['id']?>"><button type="button" class="btn btn-danger" title="Borrar">X</button></a>
 								<?php }?>
 							  </td>
 							</tr>
@@ -80,7 +81,7 @@ require('./inc/header.php');
 				  </tbody>
 				</table>
 			  </div>
- <?php }?> 
+
           
       </div><!--/row-->
 	</div>

@@ -6,13 +6,13 @@ class Perfiles_aeModelo extends Model{
       
 	}
     public function getList(){
-		$query = "SELECT id, nombre 
+		$query = "SELECT id, nombre, activo
 		           FROM perfil";
 				   
         return $this->db->query($query); 
 	}
     public function get($id){
-	    $query = "SELECT id, nombre
+	    $query = "SELECT id, nombre,activo
 		           FROM perfil WHERE id = $id";
 	
 				   

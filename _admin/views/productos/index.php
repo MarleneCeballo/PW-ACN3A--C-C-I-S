@@ -3,8 +3,8 @@
 <div class="container-fluid">
       
       <?php 
-        $perfilMenu = 'Perfiles';
-	      $perfiles = $this -> perfiles;
+        $productosMenu = 'Productos';
+	      $productos = $this -> productos;
 	      require_once('./inc/side_bar.php');
       ?>
 	  
@@ -18,32 +18,37 @@
           </p>
           
 		  <h1 class="page-header">
-            Perfiles
+          Productos
           </h1>
  
 
-          <h2 class="sub-header">Listado <a href="perfiles_ae"><button type="button" class="btn btn-success" title="Agregar">Add</button></a></h2>
+          <h2 class="sub-header">Listado <a href="productos_ae"><button type="button" class="btn btn-success" title="Agregar">Add</button></a></h2>
           <div class="table-responsive">
             <table class="table table-striped">
               <thead>
                 <tr>
                   <th>#</th>
                   <th>Nombre</th> 
+                  <th>Modelo</th>
+                  <th>Precio</th>
                   <th>Activo</th> 
 				  <th>Acciones</th>
                 </tr>
               </thead>
 			  <tbody>
 				<?php  	 
-					foreach($perfiles as $perfil){?>
+					foreach($productos as $producto){?>
               
 						<tr>
-						  <td><?php echo $perfil['id'];?></td>
-						  <td><?php echo $perfil['nombre'];?></td> 
-              <td><?php echo $perfil['activo'];?></td> 
+						  <td><?php echo $producto['id'];?></td>
+                          <td><?php echo $producto['nombre'];?></td> 
+                          <td><?php echo $producto['modelo'];?></td>
+                          <td><?php echo $producto['precio'];?></td>
+						 
+              <td><?php echo $producto['activo'];?></td> 
 						  <td>
-						      <a href="./perfiles_ae?edit=<?php echo $perfil['id']?>"><button type="button" class="btn btn-info" title="Modificar">M</button></a>
-							  <a href="?del=<?php echo $perfil['id']?>"><button type="button" class="btn btn-danger" title="Borrar">X</button></a>
+						      <a href="./productos_ae?edit=<?php echo $producto['id']?>"><button type="button" class="btn btn-info" title="Modificar">M</button></a>
+							  <a href="?delete=<?php echo $producto['id']?>"><button type="button" class="btn btn-danger" title="Borrar">X</button></a>
 					      </td>
 						</tr>
 				    <?php }?>                

@@ -1,10 +1,11 @@
 <?php 
-class UsuarioModelo extends Model{
+class ComentariosModelo extends Model{
 	
 	
     function __construct()
     {
 		parent::__construct();
+       
 	}
 
 	public function get($id){

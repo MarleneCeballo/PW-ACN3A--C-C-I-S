@@ -3,11 +3,12 @@
 require_once('./config/config.php');
 require_once('./controllers/usuarios.php');
 require_once('./controllers/perfiles.php');
+require_once('./controllers/marcas.php');
 
 
 
 
-$user = new Usuario();
+$user = new Usuarios();
 
 if(isset($_POST['login'])){
   $user->loadModel("Usuario");

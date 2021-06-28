@@ -1,6 +1,6 @@
 <?php 
 
-Class Usuario extends Controller{
+Class Usuarios extends Controller{
 
     /*conexion a la base*/
 	private $con;
@@ -8,43 +8,105 @@ Class Usuario extends Controller{
 
 	public function __construct(){
 		parent::__construct();
-	
+		if(isset($_POST['submit'])){ 
+            if($_POST['id_usuario'] > 0){
+                    $this->edit($_POST); 
+                   
+            }else{
+                $this->save($_POST); 
+            }
+            
+            header('Location: usuarios.php');
+        }	
+        
+    
+        if(isset($_GET['del']) AND in_array('user.del',$_SESSION['usuario']['permiso']['cod'])){
+            $this->del($_GET['del']);
+                header('Location: usuarios.php');
+    
+        }
 	}
+	public function loadModel($model){
+		$model = "Usuarios";
+		$url = './model/Usuarios.php';
+        if (file_exists($url)){
+            require $url;
+            $modelName = 'UsuariosModelo';
+            $this->model = new $modelName();
+        }
+		// $url = './model/'.$model.'.php';
+		
+        // if (file_exists($url)){
+        //     require $url;
+        //     $modelName = $model.'Modelo';
+        //     $this->model = new $modelName();
+        // }
+		
+    }
+
       // pasar getlist al model
 	public function getList(){
+		
 		$query = "SELECT id_usuario,nombre,apellido,email,usuario,clave,activo 
 		           FROM usuarios ";
 		$resultado = array();
-		foreach($this->con->query($query) as $key=>$usuario){
+		foreach($this->model->db->query($query) as $key=>$usuario){
 			$resultado[$key] = $usuario;
 			$sql = 'SELECT nombre 
 					  FROM perfil 
 					  INNER JOIN usuarios_perfiles ON (usuarios_perfiles.perfil_id = perfil.id)
 					  WHERE usuarios_perfiles.usuario_id = '.$usuario['id_usuario'];
-			foreach($this->con->query($sql) as $perfil){
+			foreach($this->model->db->query($sql) as $perfil){
 				$resultado[$key]['perfiles'][] = $perfil['nombre'];
 			}
 			
 			
 		}
-			/* echo '<pre>';
-			var_dump($resultado);echo '</pre>'; */
+			
             return $resultado; 
 	}
 
 	function render(){
-		
+		$query = 'SELECT * FROM permisos';
+        $permisos = $this->model->db->query($query);
+        $this->view->permisos = $permisos;
+		$users = $this;
+        $this->view->users = $users;
         $this->view->render("usuarios/index");
     }
 
-
+	// public function save($data){
+	// 	$this-> db = new Database();
+    //     $this -> db = $this -> db -> conectar();
+    //         foreach($data as $key => $value){
+				
+	// 			if(!is_array($value)){
+	// 				if($value != null){
+	// 					$columns[]=$key;
+	// 					$datos[]=$value;
+	// 				}
+	// 			}
+	// 		}
+	// 		//var_dump($datos);die();
+    //         $sql = "INSERT INTO perfil(".implode(',',$columns).") VALUES('".implode("','",$datos)."')";
+	// 		//echo $sql;die();
+			
+    //         $this->  db ->exec($sql);
+	// 		$id = $this-> db ->lastInsertId();
+			   			
+	// 		$sql = '';
+	// 		foreach($data['permisos'] as $permisos){
+	// 			$sql .= 'INSERT INTO perfil_permisos(perfil_id,permiso_id) 
+	// 						VALUES ('.$id.','.$permisos.');';
+	// 		}
+ 	// 		$this->  db ->exec($sql);
+			 
+	// } 
 	
-	/**
-	* Guardo los datos en la base de datos
-	*/
 	public function save($data){
+		$this-> db = new Database();
+        $this -> db = $this -> db -> conectar();
 			$data['salt'] = uniqid();
-            // $data['salt'] = md5(date("Y-m-d H:i:s"));
             $data['clave'] = $this->encrypt($data['clave'],$data['salt']);
             
             foreach($data as $key => $value){
@@ -56,15 +118,15 @@ Class Usuario extends Controller{
 				}
             }
             $sql = "INSERT INTO usuarios(".implode(',',$columns).") VALUES('".implode("','",$datos)."')";
-            $this->con->exec($sql);
-			$id_usuario = $this->con->lastInsertId();
+            $this->db->exec($sql);
+			$id_usuario = $this->db->lastInsertId();
 			  			
 			$sql = '';
 			foreach($data['perfil'] as $perfil){
 				$sql .= 'INSERT INTO usuarios_perfiles(usuario_id,perfil_id) 
 							VALUES ('.$id_usuario.','.$perfil.');';
 			}
- 			$this->con->exec($sql);
+ 			$this->db->exec($sql);
 	} 
 	
 	/**
@@ -73,66 +135,56 @@ Class Usuario extends Controller{
 	public function edit($data){
 	    $id = $data['id_usuario'];
 	    unset($data['id_usuario']);
-	    
-            if( $data['clave'] != null){
-				$user = $this-> model ->get($id);
-                $data['clave'] = $this->encrypt($data['clave'],$user->salt);
-            }else{
-                unset($data['clave']);
-			}
-			
-            foreach($data as $key => $value){
-                if($value != null){
-                    $columns[]=$key." = '".$value."'"; 
-                }
+		// 	
+		$this-> db = new Database();
+        $this -> db = $this -> db -> conectar();
+            // if( $data['clave'] != null){
+			// 	$user = $this-> model ->get($id);
+            //     $data['clave'] = $this->encrypt($data['clave'],$user->salt);
+            // }else{
+            //     unset($data['clave']);
+			// }
+			foreach($data as $key => $value){
+				if(!is_array($value)){
+					if($value != null){	
+						$columns[]=$key." = '".$value."'"; 
+					}
+				}
             }
+            // foreach($data as $key => $value){
+            //     if($value != null){
+            //         $columns[]=$key." = '".$value."'"; 
+            //     }
+            // }
             $sql = "UPDATE usuarios SET ".implode(',',$columns)." WHERE id_usuario = ".$id;
             
-            $this->con->exec($sql);
-			
+			$this-> db-> exec($sql);
 			 
 			 
 			$sql = 'DELETE FROM usuarios_perfiles WHERE usuario_id = '.$id;
-			$this->con->exec($sql);
+			$this-> db-> exec($sql);
 			
 			$sql = '';
-			foreach($data['perfil'] as $perfil){
+			foreach($data['perfil'] as $perfil => $t){
 				$sql .= 'INSERT INTO usuarios_perfiles(usuario_id,perfil_id) 
-							VALUES ('.$id.','.$perfil.');';
+							VALUES ('.$id.','.$perfil[$t]->{'id'}.');';
 			}
- 			$this->con->exec($sql);
+ 			$this-> db-> exec($sql);
 	} 
-	
-	/**
-	* encrypt password
-	*/
-	
-	
-	
-	/**
-	* Login de usuario
-	*/
-	public function loadModel($model){
-		$model = "Usuario";
-		$url = 'model/Usuario.php';
-        if (file_exists($url)){
-            require $url;
-            $modelName = 'UsuarioModelo';
-            $this->model = new $modelName();
-        }
-    }
 
 	private function encrypt($clave,$salt){
 		
 		$clave .= $salt;
 		return hash('md5',$clave);
 	}
-	
-        public function del($id){
-			$sql = "DELETE FROM usuarios WHERE id_usuario = ".$id.';';
-			$sql .= 'DELETE FROM usuarios_perfiles WHERE usuario_id = '.$id;
+        
 
-            $this->con->exec($sql);
+        public function del($id){
+			
+			$query = "UPDATE `usuarios` SET `activo`= 0  WHERE id = ".$id."; ";
+			$this->db->exec($query); 
+			return 1;
+		
         }
 		
 	public function login($data){

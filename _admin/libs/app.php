@@ -12,18 +12,27 @@ class App{
         
         $archivocontrolador = 'controllers/' . $ruta . '.php';
         echo $archivocontrolador;
+
         if(file_exists($archivocontrolador)){
             
             require_once $archivocontrolador;
             $controlador = new $ruta;
             $controlador->loadModel($ruta);
+            $nparam = sizeof($url);
             echo " entro";
             //hay un metodo
+            if($nparam>2){
+                $param = [];
+                for ($i = 2 ; $i<$nparam; $i++){
+                    array_push($param, $url[$i]);
+                }
+                $controlador->{$url[1]}($param);
+            }else{
             if (isset($url[1])){
                 $controlador->{$url[1]}();
             }else{
                 $controlador->render();
-            }
+            }}
         }else{
                 $controlador = new Errores();
         }
