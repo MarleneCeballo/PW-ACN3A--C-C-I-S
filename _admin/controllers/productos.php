@@ -66,7 +66,7 @@ Class Productos extends Controller{
 			//var_dump($datos);die();
             $sql = "INSERT INTO zapatillas(".implode(',',$columns).") VALUES('".implode("','",$datos)."')";
 			//echo $sql;die();
-			$id = $this-> db ->lastInsertId();
+			
             $this->  db ->exec($sql);
 			
 			   			

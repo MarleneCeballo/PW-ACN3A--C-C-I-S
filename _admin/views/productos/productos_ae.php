@@ -7,9 +7,9 @@
 	    $productos = $this -> productos;
         if(isset($_GET['edit'])){
             $productos = $productos ->  get($_GET['edit']); 
-           
+            $comentarios = $this -> comentarios;
         } 
-      var_dump($productos);
+      var_dump($comentarios);
 	?>
 	  
 	  
@@ -75,8 +75,20 @@
                 <input type="hidden" class="form-control" id="id" name="id" placeholder="" value="<?php echo (isset($productos->id)?$productos->id:'');?>">
 
             </form>
-          </div>
- 
+            <?php  if(isset($_GET['edit'])){
+                echo ('<div class="form-group">');
+                echo  ('<label for="tipo" class="col-sm-2 control-label">Comentarios</label>');
+                echo  (' <div class="col-sm-10">');?>
+                         <?php  if($comentarios != null){
+                        foreach($comentarios as $t){?>
+                         <pre><?php echo'Nombre: ';echo $t['nombre'];echo '<br>'; 
+                         echo'Estrellas: ';echo $t['estrellas'];echo '<br>'; 
+                         echo'Comentario: ';echo $t['comentario']; ?>
+                         </pre> 
+                         <?php }}?>
+               <?php      echo ( '</div></div> </div>');}?> 
+           
+                   
           
       </div><!--/row-->
 	</div>

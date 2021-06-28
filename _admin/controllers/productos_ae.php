@@ -13,6 +13,13 @@ Class Productos_ae extends Controller{
         }
     }
     function render(){
+        if(isset($_GET['edit'])){
+            $query = 'SELECT * FROM comentarios where id_producto = ' . $_GET['edit'];
+            $comentarios = $this->model->db->query($query);
+            $this->view->comentarios = $comentarios; 
+           
+    }
+      
         $productos = $this->model;
         $this->view->productos = $productos;
 
