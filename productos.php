@@ -65,11 +65,11 @@
 				}
 				if (isset($_GET['filter'])){
 					
-					$filtrar = "WHERE nuevo = 'si' ";
+					$filtrar = "WHERE nuevo = 'si' and activo = 1 ";
 				}
 				else{
 					
-					$filtrar = " ";
+					$filtrar = " WHERE activo = 1 ";
 				}
 				
 				

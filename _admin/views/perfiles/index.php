@@ -43,7 +43,7 @@
               <td><?php echo $perfil['activo'];?></td> 
 						  <td>
 						      <a href="./perfiles_ae?edit=<?php echo $perfil['id']?>"><button type="button" class="btn btn-info" title="Modificar">M</button></a>
-							  <a href="?del=<?php echo $perfil['id']?>"><button type="button" class="btn btn-danger" title="Borrar">X</button></a>
+							  <a href="?delete=<?php echo $perfil['id']?>"><button type="button" class="btn btn-danger" title="Borrar">X</button></a>
 					      </td>
 						</tr>
 				    <?php }?>                

@@ -14,7 +14,7 @@ class Controller{
             require $url;
             $modelName = $model.'Modelo';
             $this->model = new $modelName();
-            echo('Aca estoy');
+          
         }
     }
 }

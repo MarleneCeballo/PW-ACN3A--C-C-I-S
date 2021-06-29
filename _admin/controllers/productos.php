@@ -32,7 +32,7 @@ Class Productos extends Controller{
 	
 	
 	function render(){
-		
+	
 		$productos = $this->model->getList();
 		$this->view->productos = $productos;
         $this->view->render("productos/index",$productos);
@@ -54,6 +54,7 @@ Class Productos extends Controller{
 	public function save($data){
 		$this-> db = new Database();
         $this -> db = $this -> db -> conectar();
+		// var_dump($data);exit;
             foreach($data as $key => $value){
 				
 				if(!is_array($value)){
@@ -118,7 +119,8 @@ Class Productos extends Controller{
 				}
             }
             // $sql = "UPDATE productos SET ".implode(',',$columns)." WHERE id = ".$id;
-            $sql = "UPDATE zapatillas SET id=$id, nombre= ".'"'.$data['nombre'].'"'.", activo= ".$data['activo'].", precio= ".$data['precio'].", modelo= ".'"'.$data['modelo'].'"'.", descripcion= ".'"'.$data['descripcion'].'"'." WHERE id = $id";
+            $sql = "UPDATE zapatillas SET id=$id, nombre= ".'"'.$data['nombre'].'"'.", activo= ".$data['activo'].", precio= ".$data['precio'].", modelo= ".'"'.$data['modelo'].'"'.", descripcion= ".'"'.$data['descripcion'].'"'.", id_marca= ".$data['id_marca'].", id_genero= ".$data['id_genero']." WHERE id = $id";
+			
 			// var_dump($sql);exit;
             $this-> db-> exec($sql);
 			

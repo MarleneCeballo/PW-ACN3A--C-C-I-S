@@ -85,19 +85,24 @@ require('inc/header.php');
                                     ?>
 								<?php   
 									if(isset($usuario->perfiles)){
-                                        echo($t->{'nombre'});
+                                        echo($t->{'id'});
                                         echo('<option');
 										if(in_array($t->{'id'},$usuario->perfiles)){
-                                            echo ' selected="selected" >';
+                                            echo ' selected="selected" ';
+                                            echo' value='.$t->{'id'}.'>';
+                                            echo $t->{'nombre'};
 										}else{
-                                            echo'>';
+                                            echo' value='.$t->{'id'}.'>';
+                                            echo $t->{'nombre'};
                                         }
 									}else{
-                                        echo($t->{'nombre'});
-                                        echo('<option>');
+                                        echo($t->{'id'});
+                                        echo('<option');
+                                        echo' value='.$t->{'id'}.'>';
+                                        echo $t->{'nombre'};
                                     }
 								
-								?><?php    echo $t->{'nombre'};?></option>
+								?></option>
                             <?php }?>
                         </select>
                     </div>

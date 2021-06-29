@@ -12,8 +12,7 @@ require('./inc/header.php');
 	   if(!in_array('user.add',$_SESSION['usuarios']['permisos']['cod'])){ 
 				header('Location: index.php');
 			}
-			
-			
+			// var_dump($_SESSION['usuarios']['permisos']['cod']);
 	include('inc/side_bar.php');
 	 
 	

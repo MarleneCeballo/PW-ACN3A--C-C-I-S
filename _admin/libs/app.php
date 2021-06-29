@@ -11,7 +11,7 @@ class App{
         $ruta = empty($url[0]) ? 'main' : $url[0];
         
         $archivocontrolador = 'controllers/' . $ruta . '.php';
-        echo $archivocontrolador;
+       
 
         if(file_exists($archivocontrolador)){
             
@@ -19,7 +19,7 @@ class App{
             $controlador = new $ruta;
             $controlador->loadModel($ruta);
             $nparam = sizeof($url);
-            echo " entro";
+         
             //hay un metodo
             if($nparam>2){
                 $param = [];

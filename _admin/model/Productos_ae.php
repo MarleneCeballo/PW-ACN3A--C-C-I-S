@@ -6,8 +6,7 @@ class Productos_aeModelo extends Model{
       
 	}
     public function getList(){
-		$query = "SELECT id, nombre, activo
-		           FROM zapatillas";
+		$query = "SELECT * FROM zapatillas";
 				   
         return $this->db->query($query); 
 	}
@@ -16,6 +15,7 @@ class Productos_aeModelo extends Model{
         $query = $this->db->prepare($query); 
 		$query -> execute();
 		$productos = $query->fetch(PDO::FETCH_OBJ);
+		// var_dump($productos);
             return $productos;
 	}
 

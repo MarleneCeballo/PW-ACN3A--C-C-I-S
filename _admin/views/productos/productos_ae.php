@@ -3,13 +3,14 @@
       
       <?php $productosMenu = 'Productos';
 	    require_once('./inc/side_bar.php');
-
+        $marcas = $this -> marcas;
 	    $productos = $this -> productos;
+        $categorias = $this -> categorias;
         if(isset($_GET['edit'])){
             $productos = $productos ->  get($_GET['edit']); 
             $comentarios = $this -> comentarios;
         } 
-      var_dump($comentarios);
+        var_dump($productos);
 	?>
 	  
 	  
@@ -56,6 +57,83 @@
                     </div>
                 </div> 
                 <div class="form-group">
+                
+                    <label for="id_marca" class="col-sm-2 control-label">Marca</label>
+                    <div class="col-sm-10">
+                        <select name="id_marca" id="id_marca">
+                            <?php  
+                                
+                            foreach($marcas as $row => $t){         
+                              
+                                    ?>
+								<?php   
+                               
+									if(isset($productos->id_marca)){
+                                        echo($t['id']);
+                                        
+                                        echo('<option');
+                                        // var_dump($t);
+										if(intval($t[0]) == $productos -> {'id_marca'}){
+                                            echo ' selected="selected" ';
+                                            echo' value='.$t['id'].'>';
+                                            echo $t['nombre'];
+										}else{
+                                            echo' value='.$t['id'].'>';
+                                            echo $t['nombre'];
+                                        }
+									}else{
+                                        echo($t['id']);
+                                        echo('<option');
+                                        echo' value='.$t['id'].'>';
+                                        echo $t['nombre'];
+                                    }
+								
+								?></option>
+                            <?php }?>
+                        </select>
+                    </div>
+                </div> 
+                <div class="form-group">
+                
+                <label for="id_genero" class="col-sm-2 control-label">Categoria</label>
+                <div class="col-sm-10">
+                    <select name="id_genero" id="id_genero">
+                        <?php  
+                            
+                        foreach($categorias as $row => $t){         
+                          
+                                ?>
+                            <?php   
+                           
+                                if(isset($productos->id_genero)){
+                                    echo($t['id']);
+                                    
+                                    echo('<option');
+                                    // var_dump($t);
+                                    if(intval($t[0]) == $productos -> {'id_genero'}){
+                                        echo ' selected="selected" ';
+                                        echo' value='.$t['id'].'>';
+                                        echo $t['nombre'];
+                                    }else{
+                                        echo' value='.$t['id'].'>';
+                                        echo $t['nombre'];
+                                    }
+                                }else{
+                                    echo($t['id']);
+                                    echo('<option');
+                                    echo' value='.$t['id'].'>';
+                                    echo $t['nombre'];
+                                }
+                            
+                            ?></option>
+                        <?php }?>
+                    </select>
+                </div>
+            </div>                
+                                    
+               
+               
+                <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                     <div class="checkbox">
                         <label for="activo">
@@ -65,7 +143,7 @@
                     </div>
                     </div>
                 </div>
-                 <div>
+                
               
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">

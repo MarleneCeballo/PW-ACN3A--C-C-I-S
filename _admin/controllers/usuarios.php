@@ -16,13 +16,13 @@ Class Usuarios extends Controller{
                 $this->save($_POST); 
             }
             
-            header('Location: usuarios.php');
+            header('Location: usuarios');
         }	
         
     
-        if(isset($_GET['del']) AND in_array('user.del',$_SESSION['usuario']['permiso']['cod'])){
+        if(isset($_GET['del'])){
             $this->del($_GET['del']);
-                header('Location: usuarios.php');
+                header('Location: usuarios');
     
         }
 	}
@@ -132,18 +132,37 @@ Class Usuarios extends Controller{
 	/**
 	* Actualizo los datos en la base de datos
 	*/
+	public function get($id){
+        $query = "SELECT id_usuario,nombre,apellido,email,usuario,clave,activo,salt
+        FROM usuarios WHERE id_usuario = ".$id;
+	
+				   
+        $query = $this->db->prepare($query); 
+		$query -> execute();
+		$usuario = $query->fetch(PDO::FETCH_OBJ);
+			
+        $sql = 'SELECT perfil_id
+        FROM usuarios_perfiles  
+        WHERE usuarios_perfiles.usuario_id = '.$usuario->id_usuario;
+					  
+			foreach($this->db->query($sql) as $perfil){
+				$usuario->perfiles[] = $perfil['perfil_id'];
+			}
+			
+            return $usuario;
+	}
 	public function edit($data){
 	    $id = $data['id_usuario'];
 	    unset($data['id_usuario']);
-		// 	
+		// var_dump($data);exit;
 		$this-> db = new Database();
         $this -> db = $this -> db -> conectar();
-            // if( $data['clave'] != null){
-			// 	$user = $this-> model ->get($id);
-            //     $data['clave'] = $this->encrypt($data['clave'],$user->salt);
-            // }else{
-            //     unset($data['clave']);
-			// }
+            if( $data['clave'] != null){
+				$user = $this-> get($id);
+                $data['clave'] = $this->encrypt($data['clave'],$user->salt);
+            }else{
+                unset($data['clave']);
+			}
 			foreach($data as $key => $value){
 				if(!is_array($value)){
 					if($value != null){	
@@ -151,11 +170,6 @@ Class Usuarios extends Controller{
 					}
 				}
             }
-            // foreach($data as $key => $value){
-            //     if($value != null){
-            //         $columns[]=$key." = '".$value."'"; 
-            //     }
-            // }
             $sql = "UPDATE usuarios SET ".implode(',',$columns)." WHERE id_usuario = ".$id;
             
 			$this-> db-> exec($sql);
@@ -167,7 +181,7 @@ Class Usuarios extends Controller{
 			$sql = '';
 			foreach($data['perfil'] as $perfil => $t){
 				$sql .= 'INSERT INTO usuarios_perfiles(usuario_id,perfil_id) 
-							VALUES ('.$id.','.$perfil[$t]->{'id'}.');';
+							VALUES ('.$id.','.$t['id'].');';
 			}
  			$this-> db-> exec($sql);
 	} 
@@ -179,14 +193,27 @@ Class Usuarios extends Controller{
 	}
         
 
-        public function del($id){
+        // public function del($id){
 			
-			$query = "UPDATE `usuarios` SET `activo`= 0  WHERE id = ".$id."; ";
+		// 	$query = "UPDATE `usuarios` SET `activo`= 0  WHERE id = ".$id."; ";
+		// 	$this->model->db->exec($query); 
+		// 	return 1;
+		
+        // }
+		
+	public function del($id){
+		
+		$this-> db = new Database();
+        $this -> db = $this -> db -> conectar();
+		$query = 'SELECT count(1) as cantidad FROM usuarios WHERE id_usuario = '.$id;
+		$consulta = $this->db->query($query)->fetch(PDO::FETCH_OBJ);
+		if($consulta->cantidad){
+			$query = "UPDATE `usuarios` SET `activo`= 0  WHERE id_usuario = ".$id."; ";
 			$this->db->exec($query); 
 			return 1;
-		
-        }
-		
+		}
+
+	}
 	public function login($data){
         $query = "SELECT id_usuario,nombre,apellido,email,usuario,clave,activo,salt
                FROM usuarios WHERE activo = 1 AND usuario = '".$data['usuario']."'";

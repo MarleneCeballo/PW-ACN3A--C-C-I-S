@@ -19,7 +19,14 @@ Class Productos_ae extends Controller{
             $this->view->comentarios = $comentarios; 
            
     }
-      
+        $query = "SELECT id, nombre, activo FROM marcas";
+        $marcas = $this -> model -> db -> query($query);
+        $this -> view -> marcas = $marcas;
+
+        $query = "SELECT id, nombre, activo FROM categorias";
+        $categorias = $this -> model -> db -> query($query);
+        $this -> view -> categorias = $categorias;
+
         $productos = $this->model;
         $this->view->productos = $productos;
 

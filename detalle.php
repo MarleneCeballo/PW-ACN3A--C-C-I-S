@@ -180,7 +180,7 @@
                 }
                   foreach($arraycoms as $comentario){
                     
-                      
+                      if($comentario['aprobado'] != 0){
                echo" <div class='row pl-5'>";
                 echo    "<ul class='text-decoration-none list-unstyled'>";
                 echo        '<li>Nombre: '. $comentario['nombre'] . '</li>';
@@ -192,7 +192,7 @@
                 echo   "</ul>";
                 echo "</div>";
                 echo "<hr>";
-                
+                      }
               
                
              }

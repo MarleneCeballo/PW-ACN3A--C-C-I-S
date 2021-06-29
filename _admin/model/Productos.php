@@ -8,8 +8,7 @@ class ProductosModelo extends Model{
 	}
 
 	public function getList(){
-		$query = "SELECT *
-		           FROM zapatillas";
+		$query = "SELECT * FROM zapatillas";
 				   
         return $this->db->query($query); 
 	}

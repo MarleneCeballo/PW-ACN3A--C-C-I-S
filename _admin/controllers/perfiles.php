@@ -16,13 +16,8 @@ Class Perfiles extends Controller{
 			header('Location: perfiles');
 		}	
 		 
-		if(isset($_GET['del'])){
-				$resp = $this->del($_GET['del']) 	;
-				if($resp == 1){
-					header('Location: index.php');	
-				}
-				echo '<script>alert("'.$resp.'");</script>';
-	
+		if(isset($_GET['delete'])){
+				$this->del($_GET['delete']);
 		}
 		
 	}
@@ -43,12 +38,19 @@ Class Perfiles extends Controller{
         $this->view->render("perfiles/index",$perfiles);
     }
 
+
 	public function del($id){
-			
-		$query = "UPDATE `perfil` SET `activo`= 0  WHERE id = ".$id."; ";
-		$this->db->exec($query); 
-		return 1;
-	
+		
+		$this-> db = new Database();
+        $this -> db = $this -> db -> conectar();
+		$query = 'SELECT count(1) as cantidad FROM perfil WHERE id = '.$id;
+		$consulta = $this->db->query($query)->fetch(PDO::FETCH_OBJ);
+		if($consulta->cantidad){
+			$query = "UPDATE `perfil` SET `activo`= 0  WHERE id = ".$id."; ";
+			$this->db->exec($query); 
+			return 1;
+		}
+		
 	}
 	public function save($data){
 		$this-> db = new Database();

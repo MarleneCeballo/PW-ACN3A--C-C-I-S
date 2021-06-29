@@ -68,10 +68,8 @@ require('./inc/header.php');
 							
 							<?php if($comentario['aprobado'] == 1){
 								echo'<tr class="filterDiv activo">';
-								
 							}else{
 								echo'<tr class="filterDiv no">';
-								
 							}	?>
 							  <td><?php echo $comentario['id'];?></td>
 							  <td><?php echo $comentario['id_producto'];?></td>
