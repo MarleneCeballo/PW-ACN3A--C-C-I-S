@@ -3,7 +3,7 @@
          <div class="col-sm-3 col-md-2 sidebar-offcanvas" id="sidebar" role="navigation">
            
             <ul class="nav nav-sidebar">
-              <li><a href="index.php">Home</a></li>
+              
               <li class="<?php echo isset($productsMenu)?'active':''?>"><a href="productos">Productos</a></li>
 			  <?php if( in_array('user.add',$_SESSION['usuarios']['permisos']['cod']) ){?>
 					<li class="<?php echo isset($userMenu)?'active':''?>"><a href="usuarios">Usuarios</a></li>

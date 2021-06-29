@@ -10,7 +10,7 @@
             $productos = $productos ->  get($_GET['edit']); 
             $comentarios = $this -> comentarios;
         } 
-        var_dump($productos);
+        
 	?>
 	  
 	  
