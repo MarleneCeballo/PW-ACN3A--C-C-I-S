@@ -3,6 +3,7 @@ Materia: Producción Web - Tercer Cuatrimestre
 
 Pasos para levantar el proyecto:
 1 - Clonar el repositorio.
+<br>
 2 - Crear la nueva Base de Datos.
 3 - Importar el archivo produccion.sql.
 4 - Cambiar por tus credenciales en login.php y dentro de la carpeta _admin/config el archivo config.php.
