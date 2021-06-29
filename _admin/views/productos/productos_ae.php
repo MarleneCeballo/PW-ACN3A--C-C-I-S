@@ -57,6 +57,32 @@
                     </div>
                 </div> 
                 <div class="form-group">
+
+                <div class="form-group">
+                    <label for="imagenmini" class="col-sm-2 control-label">Imagen Mini</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="imagenmini" name="imagenmini" placeholder="" value="<?php echo (isset($productos->imagenmini)?$productos->imagenmini:'');?>">
+                    </div>
+                </div> 
+                <div class="form-group">
+                <div class="form-group">
+                    <label for="imagengrande" class="col-sm-2 control-label">Imagen Grande</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="imagengrande" name="imagengrande" placeholder="" value="<?php echo (isset($productos->imagengrande)?$productos->imagengrande:'');?>">
+                    </div>
+                </div> 
+                   
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                    <div class="checkbox">
+                        <label for="nuevo">
+                        <input type="checkbox" name="activo" value="1" <?php if(isset($productos->nuevo))if($productos->nuevo==1){echo 'checked';}else{echo'';}?>> Nuevo
+                        </label>
+                       
+                    </div>
+                    </div>
+                </div>
+                <div class="form-group">
                 
                     <label for="id_marca" class="col-sm-2 control-label">Marca</label>
                     <div class="col-sm-10">

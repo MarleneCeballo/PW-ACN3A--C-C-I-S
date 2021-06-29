@@ -65,7 +65,7 @@
 				}
 				if (isset($_GET['filter'])){
 					
-					$filtrar = "WHERE nuevo = 'si' and activo = 1 ";
+					$filtrar = "WHERE nuevo = 1 and activo = 1 ";
 				}
 				else{
 					
@@ -84,7 +84,7 @@
 					echo '<div class="col-sm-4 pt-1">';
 					echo '<div class="card-columns-fluid">';
 					echo '<img src="'. $rows["imagenmini"].'" class="card-img-top" alt="'. $rows["nombre"] .'">';
-					if($rows["nuevo"] == "si"){
+					if($rows["nuevo"]){
 						echo '<span class="badge badge-danger">Nuevo</span>';
 					}
 					echo '<div class="card-body">';

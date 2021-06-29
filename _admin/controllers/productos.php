@@ -80,31 +80,6 @@ Class Productos extends Controller{
 			 
 	} 
 	
-	
-
-// 	public function edit($data){
-		
-// 		$data['activo'] = isset($_POST['activo'])?1:0;
-		
-// 		$id = $data['id'];
-// 		unset($data['id']);
-// 	$this-> db = new Database();
-// 	$this -> db = $this -> db -> conectar();
-// 		// foreach($data as $key => $value){
-// 		// 	if(!is_array($value)){
-// 		// 		if($value != null){	
-// 		// 			$columns[]=$key." = '".$value."'"; 
-// 		// 		}
-// 		// 	}
-// 		// }
-// 		// $sql = "UPDATE marcas SET ".implode(',',$columns)." WHERE id = ".$id;
-// 		$sql = "UPDATE marcas SET id=$id, nombre= ".'"'.$data['nombre'].'"'.", activo= ".$data['activo']." WHERE id = $id";
-		
-// 		$this-> db-> exec($sql);
-
-// 		header('Location: marcas');
-// } 
-// }
 	public function edit($data){
 			$data['activo'] = isset($_POST['activo'])?1:0;
 			$id = $data['id'];
@@ -118,9 +93,8 @@ Class Productos extends Controller{
 					}
 				}
             }
-            // $sql = "UPDATE productos SET ".implode(',',$columns)." WHERE id = ".$id;
-            $sql = "UPDATE zapatillas SET id=$id, nombre= ".'"'.$data['nombre'].'"'.", activo= ".$data['activo'].", precio= ".$data['precio'].", modelo= ".'"'.$data['modelo'].'"'.", descripcion= ".'"'.$data['descripcion'].'"'.", id_marca= ".$data['id_marca'].", id_genero= ".$data['id_genero']." WHERE id = $id";
-			
+            $sql = "UPDATE zapatillas SET ".implode(',',$columns)." WHERE id = ".$id;
+          
 			// var_dump($sql);exit;
             $this-> db-> exec($sql);
 			
