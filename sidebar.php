@@ -78,8 +78,10 @@
 				echo'role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Categorias</a>';
 				echo'<div class="dropdown-menu dropdown-menu" aria-labelledby="navbarDropdown">';
 				foreach ($categorias as $categoria) {
+					if($categoria['activo'] == 1){
 					echo '<a class="dropdown-item" href="'.$thisFile.'?idcategoria='.$categoria['id'].
 								'&idmarca='.$idMarca.$filterorder.$filter.'">'.$categoria['nombre'].'</a><br />';
+							}
 					
 				}
 
@@ -91,9 +93,10 @@
 				echo '<div class="dropdown-menu dropdown-menu" aria-labelledby="navbarDropdown">';
 
 				foreach ($marcas as $marca) {
+					if($marca['activo'] == 1){
 					echo '<a class="dropdown-item" href="'.$thisFile.'?idcategoria='.$idCategoria.'&idmarca='.$marca['id'].$filterorder.$filter.'">'.$marca['nombre'].'</a><br />';
 					$sql = "SELECT * FROM `zapatillas` where id_marca = ".$marca['id'];
-					
+					}
 				}
 
 					

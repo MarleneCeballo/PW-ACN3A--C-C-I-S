@@ -12,6 +12,8 @@
        <li class="<?php echo isset($categoriasMenu)?'active':''?>"><a href="categorias">Categorias</a></li>
        <li class="<?php echo isset($marcasMenu)?'active':''?>"><a href="marcas">Marcas</a></li>
        <li class="<?php echo isset($comentariosMenu)?'active':''?>"><a href="comentarios">Comentarios</a></li>
+       <li class="<?php echo isset($comentariosCamposMenu)?'active':''?>"><a href="camposComentarios">Campos dinamicos Comentarios</a></li>
+       <li class="<?php echo isset($productosCamposMenu)?'active':''?>"><a href="camposProductos">Campos dinamicos Productos</a></li>
               <li><a href="?logout">logout</a></li>
             </ul>
            

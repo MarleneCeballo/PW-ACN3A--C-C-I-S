@@ -78,6 +78,7 @@
 						 
               <td><?php echo $producto['activo'];?></td> 
 						  <td>
+              <a href="./asignarCampos_ae?editCampos=<?php echo $producto['id']?>"><button type="button" class="btn btn-success" title="Agregar Campos">Add Campos</button></a>
 						      <a href="./productos_ae?edit=<?php echo $producto['id']?>"><button type="button" class="btn btn-info" title="Modificar">M</button></a>
 							  <a href="?delete=<?php echo $producto['id']?>"><button type="button" class="btn btn-danger" title="Borrar">X</button></a>
 					      </td>

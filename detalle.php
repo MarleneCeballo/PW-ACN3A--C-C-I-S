@@ -83,6 +83,32 @@
                     <li>Precio: $<?php echo $producto[0]['precio']?></li>
                     <li>Talle: 37 a 40</li>
                     <li>Codigo articulo: <?php echo $producto[0]['id']?></li>
+                    <?php $consulta = "SELECT ROUND(AVG(estrellas),0)  FROM comentarios WHERE  id_producto=". $_REQUEST['id_producto'] ." and aprobado = 1"; 
+                        $ranking = mysqli_query($mysqli, $consulta) or die("Error in Selecting " . mysqli_error($mysqli));
+                        $row= mysqli_fetch_array($ranking);
+                        if($row["ROUND(AVG(estrellas),0)"] > 0){
+                          echo "<li>Promedio Estrellas: ". $row["ROUND(AVG(estrellas),0)"] ."</li>";
+                        }
+                      
+                    ?>
+                      <?php
+                  $sql = "SELECT DISTINCT c.* FROM campos_dinamicos c inner join productos_campos p ON p.campoid = c.id inner join zapatillas z ON z.id = p.productoid where c.activo = 1 and c.type = 'p' and p.productoid =". $producto[0]["id"];
+                  // var_dump($sql);
+                  $resultcoments = mysqli_query($mysqli, $sql) or die("Error in Selecting " . mysqli_error($mysqli));
+                  $arrayprods = array();
+                  while($row =mysqli_fetch_assoc($resultcoments))
+                  {
+                    $arrayprods[] = $row;
+                  }
+                  foreach($arrayprods as $campos){
+                  //   echo'<pre>';
+                  //  var_dump($campos);
+                  //  echo'</pre>';
+                    echo"<li>". $campos['nombre'] ."</li>";
+                  }
+                  
+                  
+                  ?>
                 </ul>
 
             </div>
@@ -123,10 +149,28 @@
                       
                     </select>
                   </div>
+                
                   <div class="form-group col-12">
                   
                   <label for="comentario">Comentario</label>
                   <textarea name="comentario" class="form-control pb-2" id="comentario" rows="8"></textarea>
+                 <?php $sql = "SELECT DISTINCT c.* FROM campos_dinamicos c inner join comentarios_campos p ON p.campoid = c.id inner join zapatillas z ON z.id = p.productoid where c.type != 'p' and p.productoid =". $producto[0]["id"];
+                      $resultcoments = mysqli_query($mysqli, $sql) or die("Error in Selecting " . mysqli_error($mysqli));
+                      $arraycoms2 = array();
+                      while($row =mysqli_fetch_assoc($resultcoments))
+                      {
+                        $arraycoms2[] = $row;
+                      }
+                      foreach($arraycoms2 as $campos){
+                        if($campos['type'] == "checkbox"){
+                          echo'<label class="form-group col-lg-4 col-sm-12 col-md-4" for= '. $campos['nombre'] .'>'. $campos['nombre'] .'</label><br>';
+                        
+                        }else if($campos['type'] == "textarea"){
+                          echo'<label class="form-group col-lg-4 col-sm-12 col-md-4" for="textarea">'. $campos['nombre'] .'</label>';
+                          echo'<textarea  class="form-control pb-2" name="textarea" required></textarea><br>';
+                         echo '<input type="hidden" class="form-control" id="campoid" name="campoid" placeholder="" value="'.$campos['id'].'">';
+                        }
+                      }?>
                   <button type="submit" class="btn btn-primary pt-2" onclick="comEnviado()">Enviar</button>
                   
                   <script> 
@@ -157,10 +201,28 @@
                 $comentario = $_REQUEST['comentario'];
                 $estrellas = $_REQUEST['estrellas'];
                 $nombre = $_REQUEST['nombre'];
+                var_dump($_REQUEST);
               $sql = "INSERT INTO comentarios(id_producto,nombre,apellido,comentario,estrellas,email) 
                         VALUES (".$id_producto.",'".$nombre."','".$apellido."','".$comentario."',".$estrellas.",'".$email."');";
               if ($mysqli->query($sql) === TRUE) {
+                $sql2 = "Select * from comentarios";
+                $resultcoments = mysqli_query($mysqli, $sql2) or die("Error in Selecting " . mysqli_error($mysqli));
+                $arraycoms = array();
+                $ultimoId ="";
+                  while($row =mysqli_fetch_assoc($resultcoments))
+                {
+                  $ultimoId = $row['id'];
+                }
               
+                if (isset($_REQUEST['textarea'])) {
+
+                     
+                      $sql3 = "INSERT INTO comentarios_campos(comentarioId,productoid,campoid,valor) values (". $ultimoId .",". $_REQUEST['id_producto'] .",".$_REQUEST['campoid'] .",'".$_REQUEST["textarea"]."')";
+                      mysqli_query($mysqli, $sql3);
+                      var_dump($sql3);
+                      
+              }
+
               }
               else{echo "Error al ejecutar el comando:".$mysqli->error;}
               
@@ -172,6 +234,7 @@
             <h3 class="text-center pt-2 col-12">Comentarios</h3>
             <?php               
                 $sql = "SELECT * FROM `comentarios` where id_producto = " . $id_producto;
+               
                 $resultcoments = mysqli_query($mysqli, $sql) or die("Error in Selecting " . mysqli_error($mysqli));
                 $arraycoms = array();
                   while($row =mysqli_fetch_assoc($resultcoments))
@@ -189,13 +252,23 @@
                 echo       "<li>Comentario:" . $comentario['comentario'] ."</li>";
                 echo        "<li>Calificacion:" . $comentario['estrellas'] . " estrellas</li>";
                 echo        "<li></li>";
+                $sql = "SELECT cdin.nombre, cd.valor FROM comentarios_campos cd INNER JOIN comentarios c ON c.id = cd.comentarioid INNER JOIN campos_dinamicos cdin ON cdin.id = cd.campoid WHERE c.id =". $comentario['id'];
+                $resultcoments = mysqli_query($mysqli, $sql) or die("Error in Selecting " . mysqli_error($mysqli));
+                $arraycoms = array();
+                  while($row =mysqli_fetch_assoc($resultcoments))
+                {
+                  $arraycoms[] = $row;
+                }
+                foreach($arraycoms as $comentario){
+                  echo '<li>'.$comentario['nombre'].': '. $comentario['valor'] . '</li>';
+                }
                 echo   "</ul>";
                 echo "</div>";
                 echo "<hr>";
                       }
-              
-               
-             }
+                   
+                     
+             }  
             ?>
                 
 

@@ -54,10 +54,9 @@
 	
 			<div class="card-deck">
 			<?php
-			$r4 = rand(1,42);
-			$r5 = rand(1,42);
-			$r6 = rand(1,42);
-			 $query = "SELECT * FROM zapatillas WHERE id in(".$r4.",".$r5.",".$r6.")";
+		
+			 $query = "SELECT * From zapatillas WHERE destacado = 1 and activo = 1 ORDER BY RAND() LIMIT 3 ";
+			 
 			 $resultado=$mysqli->query($query);
 			foreach ($resultado as $rows) {
 				
@@ -76,10 +75,8 @@
 			
 				<div class="card-deck">
 				<?php
-				$r1 = rand(1,42);
-				$r2 = rand(1,42);
-				$r3 = rand(1,42);
-			 $query = "SELECT * FROM zapatillas WHERE id in(".$r1.",".$r2.",".$r3.")";
+			
+				$query = "SELECT * From zapatillas WHERE destacado = 1 and activo = 1 ORDER BY RAND() LIMIT 3 OFFSET 3";
 			 $resultado=$mysqli->query($query);
 			foreach ($resultado as $rows) {
 				

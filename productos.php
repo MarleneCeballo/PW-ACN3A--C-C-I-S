@@ -77,9 +77,14 @@
 				 
 				 
 				 $resultado=$mysqli->query($query);
-				 
+				$rank = [];
 				foreach ($resultado as $rows) {
 					if(($rows["id_marca"] == $idMarca || $idMarca == "") && ($rows["id_genero"] == $idCategoria || $idCategoria == "")){
+						$consulta = "SELECT ROUND(AVG(estrellas),0) as promedio FROM comentarios WHERE  id_producto=". $rows['id'] ." and aprobado = 1"; 
+                        $ranking = mysqli_query($mysqli, $consulta) or die("Error in Selecting " . mysqli_error($mysqli));
+                        $row= mysqli_fetch_array($ranking);
+						// var_dump($row['promedio']);
+						array_push($rank,[$rows['id'],$row['promedio']]);
 					
 					echo '<div class="col-sm-4 pt-1">';
 					echo '<div class="card-columns-fluid">';
@@ -97,14 +102,22 @@
 					echo'</div>';
 					echo'</div>';
 				}
-				};
 
-				
+				};
+			
 				?>
 			</div>
 			</div>
-
 	<?php
+	
+		if(isset($_GET['rank'])){
+			// SELECT ROUND(AVG(estrellas),0)  as promedio FROM comentarios WHERE id_producto and aprobado = 1;
+			// $query =  "SELECT * FROM zapatillas inner join comentarios on zapatillas.id = comentarios.id_producto order by promedio desc";
+			// 		 $resultado=$mysqli->query($query);
+			// $ordenar = "ORDER BY ".$row["ROUND(AVG(estrellas),0)"];
+			// $filterorder = "&rank=" . $ordenar;
+			
+		}
 		require('footer.php');
 		?>
 

@@ -4,9 +4,15 @@ Class Productos extends Controller{
 	
 	public function __construct(){
 		parent::__construct();
+		if(isset($_POST['formulario_asignarCampos'])){ 
+			$this->asignar($_POST); 
+		}
 		if(isset($_POST['formulario_productos'])){ 
+			
 			if($_POST['id'] > 0){
-					$this->edit($_POST); 
+				
+						$this->edit($_POST); 
+					
 				   
 			}else{
 				
@@ -21,16 +27,6 @@ Class Productos extends Controller{
 		}
 		
 	}
-	// public function loadModel($model){
-	// 	$url = 'model/'.$model.'.php';
-    //     if (file_exists($url)){
-    //         require $url;
-    //         $modelName = $model.'Modelo';
-    //         $this->model = new $modelName();
-    //     }
-    // }
-	
-	
 	function render(){
 	
 		$productos = $this->model->getList();
@@ -101,5 +97,55 @@ Class Productos extends Controller{
 			 
 			header('Location: productos');
 	} 
+
+	public function asignar($data){
+		
+		$id = $data['productoid'];
+		$this-> db = new Database();
+        $this -> db = $this -> db -> conectar();
+		// var_dump($data);exit;
+            foreach($data as $key => $value){
+				
+				if(!is_array($value)){
+					if($value != null){
+						$columns[]=$key;
+						$datos[]=$value;
+					}
+				}
+			}
+			
+			//var_dump($datos);die();
+            $sql ='';
+			//  "INSERT INTO productos_campos(".implode(',',$columns).") VALUES('".implode("','",$datos)."')";
+			//echo $sql;die();
+			
+			foreach($data['campoid'] as $campos){
+				$sql .= 'INSERT INTO productos_campos(productoid,campoid) 
+							VALUES ('.$id.','.$campos.');';
+			}
+
+            $this->  db ->exec($sql);
+		 
+		header('Location: productos');
+} 
+// 	public function editCampos($data){
+// 		$this-> db = new Database();
+//         $this -> db = $this -> db -> conectar();
+// 		// var_dump($data);exit;
+//             foreach($data as $key => $value){
+				
+// 				if(!is_array($value)){
+// 					if($value != null){
+// 						$columns[]=$key;
+// 						$datos[]=$value;
+// 					}
+// 				}
+// 			}
+// 			//var_dump($datos);die();
+//             $sql = "INSERT INTO campos_dinamicos(".implode(',',$columns).") VALUES('".implode("','",$datos)."')";
+// 			//echo $sql;die();
+			
+//             $this->  db ->exec($sql);
+// } 
 }
 ?>

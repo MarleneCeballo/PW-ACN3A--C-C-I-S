@@ -9,6 +9,7 @@
         if(isset($_GET['edit'])){
             $productos = $productos ->  get($_GET['edit']); 
             $comentarios = $this -> comentarios;
+            $campos = $this -> campos;
         } 
         
 	?>
@@ -191,7 +192,20 @@
                          </pre> 
                          <?php }}?>
                <?php      echo ( '</div></div> </div>');}?> 
-           
+               
+               <?php  if(isset($_GET['edit'])){
+                echo ('<div class="form-group">');
+                echo  ('<label for="tipo" class="col-sm-2 control-label">Campos</label>');
+                echo  (' <div class="col-sm-10">');?>
+                         <?php  if($campos != null){
+                        foreach($campos as $t){?>
+                         <pre><?php echo'Nombre: ';echo $t['nombre'];echo '<br>'; 
+                                    echo'Tipo: ';echo $t['type'];echo '<br>'; 
+
+                         ?>
+                         </pre> 
+                         <?php }}?>
+               <?php      echo ( '</div></div> </div>');}?> 
                    
           
       </div><!--/row-->

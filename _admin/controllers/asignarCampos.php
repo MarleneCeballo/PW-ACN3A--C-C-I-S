@@ -1,11 +1,11 @@
 <?php 
 
-Class Comentarios extends Controller{
+Class AsignarCampos extends Controller{
 
 
 	public function __construct(){
 		parent::__construct();
-		if(isset($_POST['formulario_comentarios'])){ 
+		if(isset($_POST['formulario_asignarCampos'])){ 
             if($_POST['id'] > 0){
                     $this->editar($_POST); 
                    
@@ -13,23 +13,15 @@ Class Comentarios extends Controller{
                 $this->save($_POST); 
             }
             
-            header('Location: comentarios');
+            header('Location: productos');
         }	
-        
-    
-        if(isset($_GET['delete'])){
-
-            $this->delete($_GET['delete']);
-            header('Location: comentarios');
-    
-        }
 	}
 	public function loadModel($model){
-		$model = "Comentarios";
-		$url = './model/Comentarios.php';
+		$model = "AsignarCampos";
+		$url = './model/AsignarCampos.php';
         if (file_exists($url)){
             require $url;
-            $modelName = 'ComentariosModelo';
+            $modelName = 'CamposProductosModelo';
             $this->model = new $modelName();
         }
     }
@@ -37,16 +29,15 @@ Class Comentarios extends Controller{
   
 	public function getList(){
 		
-		$query = "SELECT id,id_producto,nombre,apellido,comentario,estrellas,email,aprobado 
-		           FROM comentarios";
+		$query = "SELECT * FROM campos_dinamicos where type = 'p'";
 	    return $this->model->db->query($query); 
 	}
 
 	function render(){
 		
-		$comentarios = $this -> getList();
-        $this->view->comentarios = $comentarios;
-        $this->view->render("comentarios/index");
+		$camposProductos = $this -> getList();
+        $this->view->camposProductos = $camposProductos;
+        $this->view->render("camposProductos/index");
     }
 
 	
@@ -62,10 +53,9 @@ Class Comentarios extends Controller{
 					}
 				}
 			}
-			
-            $sql = "INSERT INTO comentarios(".implode(',',$columns).") VALUES('".implode("','",$datos)."')";
 		
-			
+            $sql = "INSERT INTO campos_dinamicos(".implode(',',$columns).") VALUES('".implode("','",$datos)."')";
+		
             $this->  db ->exec($sql);
 	
 	} 
@@ -73,7 +63,7 @@ Class Comentarios extends Controller{
 	* Actualizo los datos en la base de datos
 	*/
 	public function editar($data){
-		$data['aprobado'] = isset($_POST['aprobado'])?1:0;
+		$data['activo'] = isset($_POST['activo'])?1:0;
 	    $id = $data['id'];
 	    unset($data['id']);
 		// 	
@@ -81,22 +71,22 @@ Class Comentarios extends Controller{
         $this -> db = $this -> db -> conectar();
     
 
-			$sql = "UPDATE comentarios SET aprobado= ".$data['aprobado']." WHERE id = $id";
+			$sql = "UPDATE campos_dinamicos SET activo= ".$data['activo']." WHERE id = $id";
             
 			$this-> db-> exec($sql);
-			header('Location: comentarios');
+			header('Location: camposProductos');
 	} 
 
-
+	
 
 	public function delete($id){
 	
 		$this-> db = new Database();
         $this -> db = $this -> db -> conectar();
-		$query = 'SELECT count(1) as cantidad FROM comentarios WHERE id = '.$id;
+		$query = 'SELECT count(1) as cantidad FROM campos_Productos WHERE id = '.$id;
 		$consulta = $this->db->query($query)->fetch(PDO::FETCH_OBJ);
 		if($consulta->cantidad){
-			$query = "UPDATE `comentarios` SET `aprobado`= 0  WHERE id = ".$id."; ";
+			$query = "UPDATE `campos_dinamicos` SET `activo`= 0  WHERE id = ".$id."; ";
 			$this->db->exec($query); 
 			return 1;
 		}
